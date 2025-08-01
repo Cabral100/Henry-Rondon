@@ -734,6 +734,10 @@
 
         /* Mobile Responsive Design */
         @media (max-width: 768px) {
+            /* CORREÇÃO: Remove padding-top do body e ajusta hero */
+            body {
+                padding-top: 0; /* REMOVIDO - era isso que causava o espaço branco */
+            }
             /* Barra de cotações: texto e padding menores */
             #cotacoes-bar {
                 font-size: 11px;
