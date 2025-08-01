@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henry Rondon - Assessor de Investimentos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Variables */
+        :root {
+            --primary-dark: #252525;
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #5a7fc9;
+            --light-blue: #dbeafe;
+            --white: #ffffff;
+            --text-light: #f8fafc;
+            --text-dark: #1e293b;
+            --success-green: #10b981;
+            --danger-red: #ef4444;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header completo no topo fixo */
+        header {
+            background: rgba(10, 23, 41, 0.95);
+            backdrop-filter: blur(15px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Barra de Cotações */
+        #cotacoes-bar {
+            background: linear-gradient(90deg, var(--primary-dark) 0%, #1a2332 50%, var(--primary-dark) 100%);
+            color: var(--text-light);
+            padding: 10px 0;
+            font-size: 14px;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.2);
+            overflow: hidden;
+            position: relative;
+            z-index: 1001;
+        }
+
+        /* Área de rolagem horizontal automática */
+        .cotacoes-scroll {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: scroll-left 60s linear infinite;
+        }
+
+        /* Animação de rolagem contínua */
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .cotacao-item {
+            display: inline-block;
+            margin-right: 35px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cotacao-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cotacao-item:hover::before {
+            opacity: 1;
+        }
+
+        .cotacao-nome {
+            font-weight: bold;
+            margin-right: 8px;
+            color: var(--accent-blue);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cotacao-valor {
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cotacao-alta {
+            color: var(--success-green);
+        }
+
+        .cotacao-baixa {
+            color: var(--danger-red);
+        }
+
+        .cotacao-variacao {
+            font-size: 11px;
+            margin-left: 6px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .trending-up::after {
+            content: '📈';
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        .trending-down::after {
+            content: '📉';
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        .separador {
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+            font-size: 16px;
+            vertical-align: middle;
+        }
+
+        /* Navbar dentro do header */
+        nav.container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: transparent;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--white);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: var(--accent-blue);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 70%);
+            top: -50%;
+            left: -50%;
+            animation: pulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.1); opacity: 0.1; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .typing-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--accent-blue);
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .typing-container::before {
+            content: "Henry R escrevendo...";
+            position: absolute;
+            top: -15px;
+            left: 25px;
+            background: var(--primary-dark);
+            color: var(--accent-blue);
+            padding: 0 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--white), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero .subtitle {
+            font-size: 1.6rem;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            animation: typewriter 2s steps(40) 1s forwards;
+            border-right: 2px solid var(--accent-blue);
+            width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto 1.5rem;
+        }
+
+        .hero .description {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 3s forwards;
+            line-height: 1.8;
+        }
+
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--secondary-blue), var(--accent-blue));
+            color: var(--white);
+            padding: 18px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
+            opacity: 0;
+            animation: fadeInUp 1s ease 4s forwards;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(96, 165, 250, 0.5);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section:nth-child(even) {
+            background: rgba(30, 58, 138, 0.1);
+        }
+
+        .section h2 {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--white);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h3 {
+            font-size: 2rem;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 25px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(96, 165, 250, 0.3);
+        }
+
+        .card h4 {
+            color: var(--accent-blue);
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        /* About photo */
+        .about-photo {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-photo img {
+            max-width: 320px;
+            width: 100%;
+            height: auto;
+            border-radius: 25px;
+            border: 4px solid var(--accent-blue);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Services List */
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--accent-blue);
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .service-item::before {
+            content: '✅';
+            margin-right: 1.2rem;
+            font-size: 1.4rem;
+        }
+
+        /* Methodology Steps */
+        .methodology-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, var(--secondary-blue), var(--accent-blue));
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-weight: bold;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 15px rgba(96, 165, 250, 0.3);
+        }
+
+        /* Certificados Detalhados Aprimorados */
+        .certificates-detailed {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .certificate-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 25px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .certificate-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-blue), var(--accent-blue), var(--secondary-blue));
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(96, 165, 250, 0.4);
+        }
+
+        .certificate-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .certificate-icon {
+            font-size: 3rem;
+            margin-right: 1.5rem;
+            background: linear-gradient(45deg, var(--secondary-blue), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .certificate-title {
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .certificate-institution {
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            margin: 0;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .certificate-description {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .certificate-details {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent-blue);
+        }
+        .certificate-image-container {
+            margin: 1.5rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .certificate-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .certificate-image:hover {
+            transform: scale(1.03);
+        }
+        .certificate-details h5 {
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+
+        .certificate-details ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .certificate-details li {
+            padding: 0.5rem 0;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            position: relative;
+            padding-left: 2rem;
+            line-height: 1.5;
+        }
+
+        .certificate-details li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-green);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Quote */
+        .quote {
+            text-align: center;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--white);
+            margin: 3rem auto;
+            max-width: 700px;
+            padding: 2.5rem;
+            border-left: 5px solid var(--accent-blue);
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Social Cards */
+        .card1 {
+            width: fit-content;
+            height: fit-content;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            gap: 25px;
+            margin: 0 auto;
+        }
+
+        .socialContainer {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(44, 44, 44, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .containerThree:hover {
+            background-color: #0072b1;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 114, 177, 0.4);
+        }
+
+        .containerFour:hover {
+            background-color: #128C7E;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(18, 140, 126, 0.4);
+        }
+
+        .socialContainer:active {
+            transform: scale(0.9);
+        }
+
+        .socialSvg {
+            width: 20px;
+        }
+
+        .socialSvg path {
+            fill: rgb(255, 255, 255);
+        }
+
+        .socialContainer:hover .socialSvg {
+            animation: slide-in-top 0.3s both;
+        }
+
+        @keyframes slide-in-top {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .section-local {
+            background-color: #0a1b3b; /* azul escuro */
+            color: #ffffff;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .container-local {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-local h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .descricao-local {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #d0e6ff;
+        }
+
+        .mapa-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .mapa-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 2px solid rgba(96, 165, 250, 0.2);
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            /* Barra de cotações: texto e padding menores */
+            #cotacoes-bar {
+                font-size: 11px;
+                padding: 8px 0;
+            }
+
+            .cotacao-item {
+                margin-right: 25px;
+                padding: 4px 10px;
+            }
+
+            /* Header fixo no topo (não deve usar top: 35px!) */
+            header {
+                top: 0;
+            }
+
+            /* Corrige padding lateral */
+            .container {
+                padding: 0 15px;
+            }
+
+            /* Menu mobile oculto inicialmente */
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 23, 41, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Menu mobile visível com classe ativa */
+            .nav-menu.active {
+                display: flex;
+            }
+
+            /* Ícone/menu hamburguer aparece */
+            .mobile-menu {
+                display: block;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .hero {
+                padding: 140px 0 60px; /* Mais espaço por causa da barra + menu fixos */
+                min-height: 90vh;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.3rem;
+            }
+
+            .hero .description {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+
+            .typing-container {
+                padding: 2rem 1.5rem;
+                margin: 1.5rem auto;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .section h2 {
+                font-size: 2.2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+
+            .about-photo img {
+                max-width: 280px;
+            }
+
+            .services-list {
+                grid-template-columns: 1fr;
+            }
+
+            .methodology-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .certificates-detailed {
+                grid-template-columns: 1fr;
+            }
+
+            .certificate-card {
+                padding: 2rem;
+            }
+
+            .certificate-icon {
+                font-size: 2.5rem;
+            }
+
+            .quote {
+                font-size: 1.2rem;
+                padding: 2rem;
+            }
+
+            .socialContainer {
+                width: 50px;
+                height: 50px;
+            }
+
+            /* Ajuste global para conteúdo não ficar escondido atrás do header fixo */
+            body {
+                padding-top: 150px; /* pode ajustar conforme altura real do header + barra */
+            }
+            .section-local {
+                padding: 60px 15px;
+            }
+
+            .container-local {
+                padding: 0;
+            }
+
+            .section-local h2 {
+                font-size: 2rem;
+            }
+
+            .descricao-local {
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+
+            .mapa-container {
+                padding-bottom: 70%; /* Mais alto para telas estreitas */
+                border-radius: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .typing-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .about-photo img {
+                max-width: 240px;
+            }
+            .section-local h2 {
+                font-size: 1.8rem;
+            }
+
+            .descricao-local {
+                font-size: 0.95rem;
+            }
+
+            .mapa-container {
+                padding-bottom: 80%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+
+<header>
+    <div id="cotacoes-bar">
+        <div class="cotacoes-scroll">
+            <!-- Índices Brasileiros -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">IBOV</span>
+            <span class="cotacao-valor cotacao-alta">127.845</span>
+            <span class="cotacao-variacao trending-up">+1.2%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">IFIX</span>
+            <span class="cotacao-valor cotacao-alta">3.456</span>
+            <span class="cotacao-variacao trending-up">+0.8%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <!-- Índices Americanos -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">S&P 500</span>
+            <span class="cotacao-valor cotacao-alta">4.567</span>
+            <span class="cotacao-variacao trending-up">+0.8%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">NASDAQ</span>
+            <span class="cotacao-valor cotacao-baixa">14.234</span>
+            <span class="cotacao-variacao trending-down">-0.3%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">DOW JONES</span>
+            <span class="cotacao-valor cotacao-alta">35.678</span>
+            <span class="cotacao-variacao trending-up">+0.5%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <!-- Índices Internacionais -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">NIKKEI 225</span>
+            <span class="cotacao-valor cotacao-alta">28.456</span>
+            <span class="cotacao-variacao trending-up">+1.1%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">FTSE 100</span>
+            <span class="cotacao-valor cotacao-baixa">7.234</span>
+            <span class="cotacao-variacao trending-down">-0.4%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">DAX</span>
+            <span class="cotacao-valor cotacao-alta">15.890</span>
+            <span class="cotacao-variacao trending-up">+0.7%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <!-- Moedas -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">USD/BRL</span>
+            <span class="cotacao-valor cotacao-baixa">5.23</span>
+            <span class="cotacao-variacao trending-down">-0.7%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">EUR/BRL</span>
+            <span class="cotacao-valor cotacao-alta">5.67</span>
+            <span class="cotacao-variacao trending-up">+0.4%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">GBP/BRL</span>
+            <span class="cotacao-valor cotacao-baixa">6.45</span>
+            <span class="cotacao-variacao trending-down">-0.2%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <!-- Ações Populares -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">VALE3</span>
+            <span class="cotacao-valor cotacao-alta">R$ 65.78</span>
+            <span class="cotacao-variacao trending-up">+2.1%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">PETR4</span>
+            <span class="cotacao-valor cotacao-baixa">R$ 32.45</span>
+            <span class="cotacao-variacao trending-down">-1.3%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">ITUB4</span>
+            <span class="cotacao-valor cotacao-alta">R$ 28.90</span>
+            <span class="cotacao-variacao trending-up">+0.9%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">BBDC4</span>
+            <span class="cotacao-valor cotacao-alta">R$ 24.67</span>
+            <span class="cotacao-variacao trending-up">+1.4%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <!-- Ações Americanas -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">AAPL</span>
+            <span class="cotacao-valor cotacao-alta">$185.43</span>
+            <span class="cotacao-variacao trending-up">+1.8%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">MSFT</span>
+            <span class="cotacao-valor cotacao-baixa">$378.25</span>
+            <span class="cotacao-variacao trending-down">-0.6%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">GOOGL</span>
+            <span class="cotacao-valor cotacao-alta">$142.86</span>
+            <span class="cotacao-variacao trending-up">+2.3%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">TSLA</span>
+            <span class="cotacao-valor cotacao-baixa">$234.56</span>
+            <span class="cotacao-variacao trending-down">-3.2%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <!-- Criptomoedas -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">BITCOIN</span>
+            <span class="cotacao-valor cotacao-alta">$67.890</span>
+            <span class="cotacao-variacao trending-up">+2.1%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">ETHEREUM</span>
+            <span class="cotacao-valor cotacao-baixa">$3.456</span>
+            <span class="cotacao-variacao trending-down">-1.2%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">BNB</span>
+            <span class="cotacao-valor cotacao-alta">$389.45</span>
+            <span class="cotacao-variacao trending-up">+3.7%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <!-- Commodities -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">OURO</span>
+            <span class="cotacao-valor cotacao-alta">$2.034</span>
+            <span class="cotacao-variacao trending-up">+0.9%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">PRATA</span>
+            <span class="cotacao-valor cotacao-baixa">$24.78</span>
+            <span class="cotacao-variacao trending-down">-0.5%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">PETRÓLEO WTI</span>
+            <span class="cotacao-valor cotacao-baixa">$78.45</span>
+            <span class="cotacao-variacao trending-down">-1.8%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">BRENT</span>
+            <span class="cotacao-valor cotacao-alta">$82.90</span>
+            <span class="cotacao-variacao trending-up">+0.6%</span>
+        </span>
+            <span class="separador">|</span>
+
+            <!-- Juros e Títulos -->
+            <span class="cotacao-item">
+            <span class="cotacao-nome">SELIC</span>
+            <span class="cotacao-valor cotacao-alta">11.75%</span>
+            <span class="cotacao-variacao">+0.25pp</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">CDI</span>
+            <span class="cotacao-valor cotacao-alta">11.65%</span>
+            <span class="cotacao-variacao">+0.25pp</span>
+        </span>
+            <span class="separador">|</span>
+
+            <span class="cotacao-item">
+            <span class="cotacao-nome">T-BOND 10Y</span>
+            <span class="cotacao-valor cotacao-baixa">4.28%</span>
+            <span class="cotacao-variacao trending-down">-0.05pp</span>
+        </span>
+        </div>
+    </div>
+    <nav class="container">
+        <div class="logo">Henry Rondon</div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#home">Início</a></li>
+            <li><a href="#about">Sobre</a></li>
+            <li><a href="#certificates">Certificações</a></li>
+            <li><a href="#services">Serviços</a></li>
+            <li><a href="#methodology">Metodologia</a></li>
+            <li><a href="#contact">Contato</a></li>
+        </ul>
+        <button class="mobile-menu" id="mobileMenu">☰</button>
+    </nav>
+</header>
+
+<main>
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Henry Rondon</h1>
+
+                <div class="typing-container">
+                    <p class="subtitle">Assessor de Investimentos Certificado</p>
+                    <p class="description">Planejamento financeiro estratégico para quem já construiu patrimônio e agora deseja protegê-lo e multiplicá-lo com inteligência e segurança.</p>
+                </div>
+
+                <a href="#contact" class="cta-button">Fale Comigo</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>Sobre Mim</h2>
+
+            <div class="about-photo">
+                <img src="henry.jpg" alt="Henry R. - Assessor de Investimentos" loading="lazy">
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h4>Experiência Personalizada</h4>
+                    <p>Sou assessor de investimentos certificado pela ANCORD, com foco em planejamento financeiro estratégico. Atuo com uma abordagem personalizada e próxima, entendendo que cada cliente tem uma história única, objetivos diferentes e um momento de vida específico.</p>
+                </div>
+                <div class="card">
+                    <h4>Mais que Produtos</h4>
+                    <p>Mais do que oferecer produtos, ajudo meus clientes a tomar decisões com clareza, alinhando seus investimentos com seus valores e metas de longo prazo. Cada estratégia é construída sob medida para seu perfil e objetivos.</p>
+                </div>
+            </div>
+
+            <div class="quote">
+                "Planejamento financeiro estratégico para quem já construiu e quer proteger e multiplicar o que tem."
+            </div>
+        </div>
+    </section>
+
+    <section id="certificates" class="section">
+        <div class="container">
+            <h2>Certificações e Qualificações</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; color: var(--accent-blue);">
+                Formação sólida e certificações reconhecidas pelo mercado financeiro brasileiro e internacional
+            </p>
+
+            <div class="certificates-detailed">
+                <!-- Certificação ANCORD -->
+                <div class="certificate-card">
+                    <div class="certificate-header">
+                        <div>
+                            <h4 class="certificate-title">Certificação ANCORD</h4>
+                            <p class="certificate-institution">Associação Nacional das Corretoras e Distribuidoras</p>
+                        </div>
+                    </div>
+                    <div class="certificate-image-container">
+                        <img src="ancord.png" alt="Certificação ANCORD" class="certificate-image" loading="lazy">
+                    </div>
+                    <p class="certificate-description">
+                        A certificação ANCORD é obrigatória e essencial para atuar como Assessor de Investimentos no Brasil. Este certificado garante que possuo conhecimento técnico profundo e ético para orientar clientes em todas as decisões de investimento, seguindo as melhores práticas do mercado financeiro nacional.
+                    </p>
+                    <div class="certificate-details">
+                        <h5>Competências Certificadas:</h5>
+                        <ul>
+                            <li>Análise completa de perfil de risco e adequação (suitability)</li>
+                            <li>Conhecimento profundo dos produtos de investimento e mercado de capitais</li>
+                            <li>Compliance rigoroso e aspectos éticos da profissão</li>
+                            <li>Planejamento financeiro pessoal e familiar</li>
+                            <li>Regulamentação completa da CVM e BACEN</li>
+                            <li>Gestão de riscos e proteção patrimonial</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Diploma Toronto School -->
+                <div class="certificate-card">
+                    <div class="certificate-header">
+                        <div>
+                            <h4 class="certificate-title">Diploma em Negócios</h4>
+                            <p class="certificate-institution">Toronto School of Management - Canadá</p>
+                        </div>
+                    </div>
+                    <div class="certificate-image-container">
+                        <img src="torornto.png" alt="Diploma Toronto School of Management" class="certificate-image" loading="lazy">
+                    </div>
+                    <p class="certificate-description">
+                        Formação internacional em administração de negócios pela renomada instituição canadense Toronto School of Management. Esta formação me proporcionou uma visão global e estratégica dos mercados financeiros internacionais, além de práticas avançadas de gestão e relacionamento com clientes de alto patrimônio.
+                    </p>
+                    <div class="certificate-details">
+                        <h5>Áreas de Especialização:</h5>
+                        <ul>
+                            <li>Gestão financeira corporativa e patrimonial</li>
+                            <li>Análise avançada de mercados internacionais</li>
+                            <li>Estratégias globais de investimento e diversificação</li>
+                            <li>Liderança executiva e gestão de relacionamento Premium</li>
+                            <li>Economia internacional e análise macroeconômica</li>
+                            <li>Estruturação de portfolios multi-currency</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Certificações em Idiomas -->
+                <div class="certificate-card">
+                    <div class="certificate-header">
+                        <div>
+                            <h4 class="certificate-title">Certificações em Idiomas</h4>
+                            <p class="certificate-institution">WR Educação - Certificação Internacional</p>
+                        </div>
+                    </div>
+                    <p class="certificate-description">
+                        Certificações profissionais em tradução e fluência em múltiplos idiomas, permitindo atendimento internacional de excelência e acesso privilegiado a informações e análises dos principais mercados globais. Esta competência é fundamental para clientes com investimentos internacionais.
+                    </p>
+                    <div class="certificate-details">
+                        <h5>Idiomas e Competências:</h5>
+                        <ul>
+                            <li>Inglês - Fluência Completa (Nível C2 - Proficiência)</li>
+                            <li>Espanhol - Nível Avançado (C1 - Operacional Eficaz)</li>
+                            <li>Tradução técnica especializada em documentos financeiros</li>
+                            <li>Comunicação empresarial internacional de alto nível</li>
+                            <li>Análise e interpretação de relatórios de mercados globais</li>
+                            <li>Atendimento Premium para clientes internacionais</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Especialização em Mercados -->
+                <div class="certificate-card">
+                    <div class="certificate-header">
+                        <div>
+                            <h4 class="certificate-title">Especialização em Mercados</h4>
+                            <p class="certificate-institution">Educação Continuada - Múltiplas Instituições</p>
+                        </div>
+                    </div>
+                    <p class="certificate-description">
+                        Formação continuada e especializada em análise de mercados, produtos estruturados e estratégias avançadas de investimento. Mantenho-me constantemente atualizado com as últimas tendências, produtos e regulamentações do mercado financeiro para oferecer sempre as melhores soluções aos meus clientes.
+                    </p>
+                    <div class="certificate-details">
+                        <h5>Especializações Técnicas:</h5>
+                        <ul>
+                            <li>Análise técnica e fundamentalista avançada</li>
+                            <li>Produtos estruturados, derivativos e hedge funds</li>
+                            <li>Fundos de investimento multimercado e setoriais</li>
+                            <li>Previdência privada e estratégias de sucessão patrimonial</li>
+                            <li>Investimentos em mercados internacionais e REITs</li>
+                            <li>Criptomoedas e ativos digitais regulamentados</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="container">
+            <h2>Estrutura e Parcerias</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <h4>MGM Investimentos & BTG Pactual</h4>
+                    <p>Sou vinculado à MGM Investimentos, escritório credenciado ao BTG Pactual, um dos maiores e mais respeitados bancos de investimentos da América Latina. Isso garante acesso a uma plataforma robusta, segura e com portfólio completo de soluções financeiras para todos os perfis de investidores.</p>
+                </div>
+                <div class="card">
+                    <h4>Equipe Especializada</h4>
+                    <p>Conto com uma equipe de suporte técnico especializado, backoffice eficiente, economistas qualificados e especialistas de produtos, permitindo atendimento de alto nível com agilidade, precisão e eficiência para todos os meus clientes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section">
+        <div class="container">
+            <h2>Serviços Oferecidos</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; color: var(--accent-blue);">
+                Solução completa e personalizada, com foco em proteção e crescimento patrimonial sustentável:
+            </p>
+
+            <div class="services-list">
+                <div class="service-item">Planejamento financeiro estratégico personalizado</div>
+                <div class="service-item">Alocação inteligente e diversificada de ativos</div>
+                <div class="service-item">Investimentos em renda fixa, renda variável e fundos imobiliários</div>
+                <div class="service-item">Previdência privada e planejamento sucessório avançado</div>
+                <div class="service-item">Soluções em proteção patrimonial e seguros</div>
+                <div class="service-item">Acompanhamento contínuo e rebalanceamento da carteira</div>
+                <div class="service-item">Consultoria em investimentos internacionais</div>
+                <div class="service-item">Análise e relatórios periódicos de performance</div>
+            </div>
+
+            <p style="text-align: center; margin-top: 3rem; font-style: italic; color: var(--accent-blue); font-size: 1.1rem;">
+                Tudo com total transparência, foco em resultados consistentes e alinhamento completo com os objetivos únicos do cliente.
+            </p>
+        </div>
+    </section>
+
+    <section id="methodology" class="section">
+        <div class="container">
+            <h2>Metodologia de Atendimento</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; color: var(--accent-blue);">
+                Processo estruturado e comprovado em 4 etapas para garantir os melhores resultados:
+            </p>
+
+            <div class="methodology-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Diagnóstico Financeiro Completo</h4>
+                    <p>Compreensão profunda e detalhada do perfil, objetivos, estrutura familiar, momento de vida e expectativas específicas do cliente.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Planejamento Estratégico Personalizado</h4>
+                    <p>Elaboração de uma carteira sob medida, perfeitamente alinhada com perfil de risco, metas específicas e horizonte de investimento.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Execução Técnica Especializada</h4>
+                    <p>Alocação baseada em critérios quantitativos e qualitativos rigorosos, utilizando os melhores produtos e estratégias do mercado.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>Acompanhamento Contínuo</h4>
+                    <p>Revisão periódica da carteira com ajustes proativos conforme cenário econômico e mudanças na vida do cliente.</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 3rem;">
+                <h4>Ferramentas e Acesso Premium</h4>
+                <p>Utilizo relatórios claros e dashboards interativos profissionais via plataforma BTG Pactual. O cliente tem acesso direto a mim via WhatsApp, reuniões agendadas conforme necessidade e relatórios personalizados de performance.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2>Filosofia de Investimentos</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; color: var(--accent-blue);">
+                Acredito que o verdadeiro crescimento financeiro está no equilíbrio perfeito entre segurança e estratégia inteligente.
+            </p>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h4>Diversificação Inteligente</h4>
+                    <p>Construção de carteiras perfeitamente balanceadas que distribuem riscos de forma estratégica entre diferentes classes de ativos, setores e geografias.</p>
+                </div>
+                <div class="card">
+                    <h4>Visão de Longo Prazo</h4>
+                    <p>Foco em resultados sustentáveis e consistentes que acompanham a evolução natural dos objetivos e necessidades do cliente ao longo do tempo.</p>
+                </div>
+                <div class="card">
+                    <h4>Preservação Patrimonial</h4>
+                    <p>Proteção rigorosa do patrimônio já conquistado como base sólida e segura para novos crescimentos e oportunidades de investimento.</p>
+                </div>
+                <div class="card">
+                    <h4>Rebalanceamento Proativo</h4>
+                    <p>Ajustes periódicos e estratégicos para manter a carteira sempre alinhada com cenários econômicos e objetivos pessoais em evolução.</p>
+                </div>
+            </div>
+
+            <div class="quote">
+                "Proteger vem antes de multiplicar. E multiplicar exige estratégia inteligente, não pressa ou especulação."
+            </div>
+
+            <p style="text-align: center; font-size: 1.1rem; margin-top: 2rem;">
+                Minha abordagem une conhecimento técnico sólido com visão de cenário, sempre considerando cuidadosamente o momento único de vida de cada cliente.
+            </p>
+        </div>
+    </section>
+
+    <!-- Seção Onde Estamos -->
+    <section id="onde_estamos" class="section-local">
+        <div class="container-local">
+            <h2>Onde Estamos</h2>
+            <p class="descricao-local">
+                Estou aqui no escritório da <strong>MGM Investimentos</strong>. Venha nos visitar!
+            </p>
+            <div class="mapa-container">
+                <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.434853219964!2d-46.180764023761384!3d-23.516857159960452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cdd93b514e03df%3A0xfdf7966507263db7!2sMGM%20Investimentos!5e0!3m2!1spt-BR!2sbr!4v1754070377209!5m2!1spt-BR!2sbr"
+                        width="100%"
+                        height="450"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Vamos Conversar?</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; color: var(--accent-blue);">
+                Estou aqui para ajudar você a proteger e multiplicar seu patrimônio com estratégia, segurança e resultados consistentes.
+            </p>
+
+            <div class="card1">
+                <a href="https://wa.me/5511998928474?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20op%C3%A7%C3%B5es%20de%20investimentos%20e%20como%20voc%C3%AA%20pode%20me%20ajudar." class="socialContainer containerFour" target="_blank" title="WhatsApp - Contato Direto">
+                    <svg class="socialSvg whatsappSvg" viewBox="0 0 16 16">
+                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
+                    </svg>
+                </a>
+
+                <a href="https://wa.me/5511998928474" class="socialContainer containerFour" target="_blank" title="WhatsApp - Contato Direto">
+                    <svg class="socialSvg whatsappSvg" viewBox="0 0 16 16">
+                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 Henry R. - Assessor de Investimentos Certificado. Todos os direitos reservados.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+            MGM Investimentos - Escritório Credenciado BTG Pactual
+        </p>
+        <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--accent-blue);">
+            Desenvolvido por Lucas Cabral
+        </p>
+    </div>
+</footer>
+
+<script>
+    // Mobile menu toggle
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navMenu = document.getElementById('navMenu');
+
+    mobileMenu.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+            // Close mobile menu if open
+            navMenu.classList.remove('active');
+        });
+    });
+
+    // Enhanced header scroll effect
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+            header.style.background = 'rgba(10, 23, 41, 0.98)';
+            header.style.backdropFilter = 'blur(20px)';
+        } else {
+            header.style.background = 'rgba(10, 23, 41, 0.95)';
+            header.style.backdropFilter = 'blur(15px)';
+        }
+    });
+
+    // Enhanced Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all cards, steps, and certificate cards
+    document.querySelectorAll('.card, .step, .certificate-card').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        observer.observe(el);
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('nav') && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+        }
+    });
+
+    // Enhanced typing effect with restart capability
+    let typingRestarted = false;
+    window.addEventListener('scroll', () => {
+        const heroSection = document.querySelector('.hero');
+        const rect = heroSection.getBoundingClientRect();
+
+        if (rect.top < window.innerHeight && rect.bottom > 0 && !typingRestarted) {
+            const subtitle = document.querySelector('.hero .subtitle');
+            const description = document.querySelector('.hero .description');
+            const button = document.querySelector('.cta-button');
+
+            // Reset animations
+            subtitle.style.animation = 'none';
+            description.style.animation = 'none';
+            button.style.animation = 'none';
+
+            // Restart animations with improved timing
+            setTimeout(() => {
+                subtitle.style.animation = 'typewriter 2s steps(40) 0.5s forwards';
+                description.style.animation = 'fadeInUp 1s ease 2.5s forwards';
+                button.style.animation = 'fadeInUp 1s ease 3.5s forwards';
+            }, 100);
+
+            typingRestarted = true;
+        }
+    });
+
+    // Enhanced market quotes simulation with realistic variations
+    function atualizarCotacoes() {
+        const cotacoes = document.querySelectorAll('.cotacao-valor');
+        const variacoes = document.querySelectorAll('.cotacao-variacao');
+
+        cotacoes.forEach((cotacao, index) => {
+            // Simulate realistic market movements
+            const isAlta = Math.random() > 0.45; // Slightly more likely to go up
+            const variacao = variacoes[index];
+
+            cotacao.className = `cotacao-valor ${isAlta ? 'cotacao-alta' : 'cotacao-baixa'}`;
+
+            // Update trending indicators
+            if (variacao) {
+                if (isAlta) {
+                    variacao.className = 'cotacao-variacao trending-up';
+                } else {
+                    variacao.className = 'cotacao-variacao trending-down';
+                }
+            }
+        });
+    }
+
+    // Update quotes every 8 seconds for more dynamic feel
+    setInterval(atualizarCotacoes, 8000);
+
+    // Add subtle parallax effect to hero background
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const heroBackground = document.querySelector('.hero::before');
+        if (heroBackground) {
+            document.querySelector('.hero').style.transform = `translateY(${scrolled * 0.5}px)`;
+        }
+    });
+
+    // Add loading animation for certificate cards
+    document.addEventListener('DOMContentLoaded', () => {
+        const certificateCards = document.querySelectorAll('.certificate-card');
+        certificateCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.2}s`;
+        });
+    });
+</script>
+</body>
+</html>
