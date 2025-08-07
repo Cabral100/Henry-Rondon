@@ -26,10 +26,10 @@
         }
 
         :root {
-            --primary-dark: #001F5B;
-            --primary-gold: #FFC107;
-            --secondary-blue: #003087;
-            --accent-blue: #005BFF;
+            --primary-dark: #07162E;
+            --primary-gold: #25A6E0;
+            --secondary-blue: #0A2A5A;
+            --accent-blue: #25A6E0;
             --light-blue: #E6F0FA;
             --white: #FFFFFF;
             --text-light: #F8FAFC;
@@ -55,7 +55,7 @@
         }
 
         header {
-            background: rgba(0, 31, 91, 0.95);
+            background: rgba(7, 22, 46, 0.95);
             backdrop-filter: blur(15px);
             position: fixed;
             top: 0;
@@ -68,10 +68,10 @@
         }
 
         #cotacoes-bar {
-            background: #001538;
+            background: #0A2A5A;
             color: var(--text-light);
-            padding: 8px 0;
-            font-size: clamp(10px, 2.5vw, 12px);
+            padding: 12px 0;
+            font-size: clamp(12px, 3vw, 14px);
             overflow: hidden;
             white-space: nowrap;
         }
@@ -91,20 +91,20 @@
         .cotacao-item {
             display: inline-flex;
             align-items: center;
-            margin-right: 20px;
-            padding: 5px 12px;
+            margin-right: 25px;
+            padding: 8px 15px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             transition: all 0.3s ease;
         }
 
         .cotacao-item:hover {
-            background: rgba(255, 193, 7, 0.1);
+            background: rgba(37, 166, 224, 0.1);
         }
 
         .cotacao-nome {
             font-weight: 600;
-            margin-right: 8px;
+            margin-right: 10px;
             color: var(--primary-gold);
         }
 
@@ -121,29 +121,29 @@
         }
 
         .cotacao-variacao {
-            font-size: clamp(9px, 2vw, 10px);
-            margin-left: 6px;
+            font-size: clamp(10px, 2.5vw, 12px);
+            margin-left: 8px;
             opacity: 0.9;
         }
 
         .trending-up::after {
             content: '▲';
-            font-size: clamp(8px, 2vw, 9px);
-            margin-left: 3px;
+            font-size: clamp(10px, 2.5vw, 11px);
+            margin-left: 4px;
         }
 
         .trending-down::after {
             content: '▼';
-            font-size: clamp(8px, 2vw, 9px);
-            margin-left: 3px;
+            font-size: clamp(10px, 2.5vw, 11px);
+            margin-left: 4px;
         }
 
         .separador {
             color: rgba(255, 255, 255, 0.3);
             font-weight: bold;
-            font-size: clamp(12px, 2.5vw, 14px);
+            font-size: clamp(14px, 3vw, 16px);
             vertical-align: middle;
-            margin: 0 8px;
+            margin: 0 10px;
         }
 
         nav.container {
@@ -178,6 +178,9 @@
             position: relative;
             padding: 0.5rem 0;
             font-size: clamp(0.9rem, 2.5vw, 1rem);
+            opacity: 0;
+            animation: fadeInNav 0.5s ease forwards;
+            animation-delay: calc(0.1s * var(--index));
         }
 
         .nav-menu a::after {
@@ -211,15 +214,17 @@
         }
 
         .hero {
-            padding: calc(80px + env(safe-area-inset-top)) 0 60px;
+            padding: calc(120px + env(safe-area-inset-top)) 0 60px;
             text-align: center;
             position: relative;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(0, 31, 91, 0.8), rgba(0, 31, 91, 0.8));
+            background: linear-gradient(rgba(7, 22, 46, 0.8), rgba(7, 22, 46, 0.8)), url('herohenry.png') no-repeat center center;
+            background-size: cover;
             background-attachment: fixed;
+            overflow: hidden;
         }
 
         .hero::before {
@@ -242,102 +247,118 @@
             position: relative;
             z-index: 2;
             width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
             padding: 0 15px;
         }
 
-        .typing-container {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--primary-gold);
-            border-radius: 20px;
-            padding: clamp(1.5rem, 5vw, 2rem) clamp(1rem, 4vw, 1.5rem);
-            margin: 1.5rem auto;
-            max-width: 95%;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
         .hero h1 {
-            font-size: clamp(2rem, 8vw, 3rem);
+            font-size: clamp(3rem, 8vw, 4.5rem);
             margin-bottom: 1rem;
             background: linear-gradient(45deg, var(--white), var(--primary-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 700;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.3s forwards;
         }
 
         .hero .subtitle {
-            font-size: clamp(1.2rem, 5vw, 1.5rem);
+            font-size: clamp(1.4rem, 5vw, 2rem);
             color: var(--primary-gold);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             font-weight: 500;
-            animation: typewriter 2s steps(40) 1s forwards;
-            border-right: 2px solid var(--primary-gold);
-            overflow: hidden;
-            white-space: nowrap;
-            max-width: 100%;
-        }
-
-        .hero .description {
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            max-width: 90%;
-            margin: 0 auto 2rem;
             opacity: 0;
-            animation: fadeInUp 1s ease 3s forwards;
-        }
-
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            animation: fadeInUp 0.8s ease 0.6s forwards;
         }
 
         .cta-button {
             display: inline-block;
             background: linear-gradient(45deg, var(--primary-gold), var(--accent-blue));
             color: var(--white);
-            padding: clamp(12px, 3.5vw, 15px) clamp(25px, 6vw, 30px);
+            padding: clamp(15px, 4vw, 18px) clamp(30px, 6vw, 40px);
             text-decoration: none;
             border-radius: 50px;
-            font-weight: 500;
-            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+            font-weight: 600;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
             transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+            box-shadow: 0 6px 20px rgba(37, 166, 224, 0.4);
             opacity: 0;
-            animation: fadeInUp 1s ease 4s forwards;
+            animation: fadeInUp 0.8s ease 1.2s forwards;
             touch-action: manipulation;
+            margin-top: 1rem;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.5);
+            box-shadow: 0 8px 25px rgba(37, 166, 224, 0.5);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInNav {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .intro-section {
+            padding: clamp(60px, 12vw, 80px) 0;
+            background: rgba(7, 22, 46, 0.3);
+            text-align: center;
+        }
+
+        .intro-content {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--primary-gold);
+            border-radius: 20px;
+            padding: clamp(2rem, 6vw, 3rem);
+            margin: 0 auto;
+            max-width: 900px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .intro-content h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .intro-content p {
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            line-height: 1.7;
+            color: var(--text-light);
+            margin-bottom: 0;
         }
 
         .section {
-            padding: clamp(40px, 10vw, 60px) 0;
+            padding: clamp(60px, 12vw, 80px) 0;
             position: relative;
         }
 
         .section:nth-child(even) {
-            background: rgba(0, 31, 91, 0.1);
+            background: rgba(7, 22, 46, 0.1);
         }
 
         .section h2 {
-            font-size: clamp(2rem, 6vw, 2.5rem);
+            font-size: clamp(2.2rem, 6vw, 2.8rem);
             text-align: center;
-            margin-bottom: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: clamp(2rem, 6vw, 2.5rem);
             color: var(--white);
             font-weight: 700;
         }
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: clamp(1.5rem, 5vw, 2rem);
-            margin-top: clamp(1.5rem, 5vw, 2rem);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: clamp(2rem, 6vw, 2.5rem);
+            margin-top: clamp(2rem, 6vw, 2rem);
         }
 
         .card {
@@ -345,53 +366,53 @@
             backdrop-filter: blur(15px);
             border: 1px solid var(--primary-gold);
             border-radius: 20px;
-            padding: clamp(1.5rem, 5vw, 2rem);
+            padding: clamp(2rem, 6vw, 2rem);
             transition: all 0.3s ease;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
         .card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(255, 193, 7, 0.3);
+            box-shadow: 0 15px 40px rgba(37, 166, 224, 0.3);
         }
 
         .card h4 {
             color: var(--primary-gold);
-            font-size: clamp(1.2rem, 4vw, 1.4rem);
+            font-size: clamp(1.3rem, 4vw, 1.5rem);
             margin-bottom: 1rem;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .about-photo {
             text-align: center;
-            margin-bottom: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: clamp(2rem, 6vw, 3rem);
         }
 
         .about-photo img {
             max-width: 100%;
-            width: clamp(200px, 80vw, 300px);
+            width: clamp(250px, 80vw, 350px);
             height: auto;
             border-radius: 20px;
             border: 3px solid var(--primary-gold);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .services-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: clamp(1rem, 4vw, 1.5rem);
-            margin-top: clamp(1.5rem, 5vw, 2rem);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(1.5rem, 5vw, 1.5rem);
+            margin-top: clamp(2rem, 6vw, 2rem);
         }
 
         .service-item {
             display: flex;
             align-items: center;
             background: rgba(255, 255, 255, 0.08);
-            padding: clamp(1rem, 3.5vw, 1.2rem);
+            padding: clamp(1.2rem, 4vw, 1.5rem);
             border-radius: 15px;
             border-left: 4px solid var(--primary-gold);
             transition: all 0.3s ease;
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
         }
 
         .service-item:hover {
@@ -402,19 +423,19 @@
         .service-item::before {
             content: '✅';
             margin-right: 1rem;
-            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            font-size: clamp(1.1rem, 3.5vw, 1.3rem);
         }
 
         .methodology-steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: clamp(1.5rem, 5vw, 2rem);
-            margin-top: clamp(1.5rem, 5vw, 2rem);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(2rem, 6vw, 2rem);
+            margin-top: clamp(2rem, 6vw, 2rem);
         }
 
         .step {
             text-align: center;
-            padding: clamp(1.5rem, 5vw, 2rem);
+            padding: clamp(2rem, 6vw, 2rem);
             background: rgba(255, 255, 255, 0.08);
             border-radius: 15px;
             transition: all 0.3s ease;
@@ -422,27 +443,27 @@
 
         .step:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.2);
+            box-shadow: 0 10px 30px rgba(37, 166, 224, 0.2);
         }
 
         .step-number {
             background: linear-gradient(45deg, var(--primary-gold), var(--accent-blue));
-            width: clamp(45px, 12vw, 50px);
-            height: clamp(45px, 12vw, 50px);
+            width: clamp(50px, 12vw, 60px);
+            height: clamp(50px, 12vw, 60px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1rem;
             font-weight: 700;
-            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            font-size: clamp(1.1rem, 3.5vw, 1.4rem);
         }
 
         .certificates-detailed {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: clamp(1.5rem, 5vw, 2rem);
-            margin-top: clamp(1.5rem, 5vw, 2rem);
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: clamp(2rem, 6vw, 2rem);
+            margin-top: clamp(2rem, 6vw, 2rem);
         }
 
         .certificate-card {
@@ -450,14 +471,14 @@
             backdrop-filter: blur(15px);
             border: 1px solid var(--primary-gold);
             border-radius: 20px;
-            padding: clamp(1.5rem, 5vw, 2rem);
+            padding: clamp(2rem, 6vw, 2rem);
             transition: all 0.3s ease;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
         .certificate-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(255, 193, 7, 0.3);
+            box-shadow: 0 20px 50px rgba(37, 166, 224, 0.3);
         }
 
         .certificate-header {
@@ -491,7 +512,7 @@
             color: var(--text-light);
             line-height: 1.7;
             margin-bottom: 1.5rem;
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            font-size: clamp(0.95rem, 3.5vw, 1rem);
         }
 
         .certificate-image-container {
@@ -523,7 +544,7 @@
         .certificate-details h5 {
             color: var(--primary-gold);
             margin-bottom: 0.8rem;
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            font-size: clamp(0.95rem, 3.5vw, 1rem);
             text-transform: uppercase;
             font-weight: 700;
         }
@@ -536,7 +557,7 @@
         .certificate-details li {
             padding: 0.4rem 0;
             color: var(--text-light);
-            font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+            font-size: clamp(0.9rem, 3.5vw, 0.95rem);
             position: relative;
             padding-left: 1.8rem;
         }
@@ -551,12 +572,12 @@
 
         .quote {
             text-align: center;
-            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            font-size: clamp(1.2rem, 4vw, 1.4rem);
             font-style: italic;
             color: var(--white);
-            margin: clamp(1.5rem, 5vw, 2rem) auto;
+            margin: clamp(2rem, 6vw, 3rem) auto;
             max-width: 90%;
-            padding: clamp(1.5rem, 5vw, 2rem);
+            padding: clamp(2rem, 6vw, 2rem);
             border-left: 4px solid var(--primary-gold);
             background: rgba(255, 255, 255, 0.08);
             border-radius: 12px;
@@ -573,8 +594,8 @@
         }
 
         .socialContainer {
-            width: clamp(45px, 12vw, 50px);
-            height: clamp(45px, 12vw, 50px);
+            width: clamp(50px, 12vw, 60px);
+            height: clamp(50px, 12vw, 60px);
             background-color: rgba(44, 44, 44, 0.8);
             display: flex;
             align-items: center;
@@ -596,7 +617,7 @@
         }
 
         .socialSvg {
-            width: clamp(14px, 4vw, 16px);
+            width: clamp(16px, 4vw, 20px);
         }
 
         .socialSvg path {
@@ -615,7 +636,7 @@
         .section-local {
             background-color: var(--primary-dark);
             color: var(--white);
-            padding: clamp(40px, 10vw, 60px) clamp(10px, 3vw, 15px);
+            padding: clamp(60px, 12vw, 60px) clamp(10px, 3vw, 15px);
             text-align: center;
         }
 
@@ -626,20 +647,20 @@
         }
 
         .section-local h2 {
-            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            font-size: clamp(2rem, 5vw, 2.5rem);
             margin-bottom: clamp(1rem, 3.5vw, 1.5rem);
             font-weight: 700;
         }
 
         .descricao-local {
-            font-size: clamp(1rem, 4vw, 1.1rem);
-            margin-bottom: clamp(1.5rem, 5vw, 2rem);
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            margin-bottom: clamp(2rem, 6vw, 2rem);
             color: var(--light-blue);
         }
 
         .mapa-container {
             position: relative;
-            padding-bottom: clamp(60%, 20vw, 70%);
+            padding-bottom: clamp(50%, 20vw, 60%);
             height: 0;
             overflow: hidden;
             border-radius: 10px;
@@ -657,9 +678,9 @@
 
         .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: clamp(1.5rem, 5vw, 2rem);
-            margin-top: clamp(1.5rem, 5vw, 2rem);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: clamp(2rem, 6vw, 2rem);
+            margin-top: clamp(2rem, 6vw, 2rem);
         }
 
         .testimonial-card {
@@ -667,20 +688,20 @@
             backdrop-filter: blur(15px);
             border: 1px solid var(--primary-gold);
             border-radius: 20px;
-            padding: clamp(1.5rem, 5vw, 2rem);
+            padding: clamp(2rem, 6vw, 2rem);
             text-align: center;
             transition: all 0.3s ease;
         }
 
         .testimonial-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(255, 193, 7, 0.3);
+            box-shadow: 0 15px 40px rgba(37, 166, 224, 0.3);
         }
 
         .testimonial-card p {
             font-style: italic;
             margin-bottom: 1rem;
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
         }
 
         .testimonial-card h4 {
@@ -691,7 +712,7 @@
 
         footer {
             background: var(--primary-dark);
-            padding: clamp(2rem, 6vw, 2.5rem) 0;
+            padding: clamp(3rem, 8vw, 3rem) 0;
             text-align: center;
             border-top: 2px solid var(--primary-gold);
         }
@@ -702,36 +723,36 @@
             }
 
             #cotacoes-bar {
-                font-size: clamp(9px, 2.2vw, 10px);
-                padding: 6px 0;
+                font-size: clamp(11px, 2.8vw, 13px);
+                padding: 10px 0;
             }
 
             .cotacao-item {
-                margin-right: 15px;
-                padding: 4px 10px;
+                margin-right: 20px;
+                padding: 6px 12px;
             }
 
             .cotacao-nome {
-                margin-right: 6px;
+                margin-right: 8px;
             }
 
             .cotacao-variacao {
-                font-size: clamp(8px, 2vw, 9px);
-                margin-left: 4px;
+                font-size: clamp(9px, 2.2vw, 11px);
+                margin-left: 6px;
             }
 
             .separador {
-                font-size: clamp(10px, 2.2vw, 12px);
-                margin: 0 6px;
+                font-size: clamp(12px, 2.8vw, 14px);
+                margin: 0 8px;
             }
 
             .nav-menu {
                 display: none;
                 position: fixed;
-                top: calc(60px + env(safe-area-inset-top));
+                top: calc(100px + env(safe-area-inset-top));
                 left: 0;
                 width: 100%;
-                background: rgba(0, 31, 91, 0.98);
+                background: rgba(7, 22, 46, 0.98);
                 backdrop-filter: blur(15px);
                 flex-direction: column;
                 padding: 1.5rem;
@@ -748,37 +769,35 @@
             }
 
             .hero {
-                padding: calc(60px + env(safe-area-inset-top)) 0 40px;
-                min-height: 80vh;
+                padding: calc(100px + env(safe-area-inset-top)) 0 60px;
+                min-height: 100vh;
                 background-attachment: scroll;
             }
 
-            .hero-content {
-                padding: 0 10px;
+            .intro-section {
+                padding: clamp(40px, 8vw, 60px) 0;
             }
 
-            .typing-container {
-                padding: clamp(1rem, 4vw, 1.5rem) clamp(0.8rem, 3vw, 1rem);
-                margin: 1rem auto;
-                max-width: 95%;
+            .intro-content {
+                padding: clamp(1.5rem, 4vw, 2rem);
                 border-radius: 15px;
             }
 
             .section {
-                padding: clamp(30px, 8vw, 40px) 0;
+                padding: clamp(40px, 8vw, 60px) 0;
             }
 
             .cards-grid, .testimonials-grid {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 2rem;
             }
 
             .card, .testimonial-card {
-                padding: 1.5rem;
+                padding: 2rem;
             }
 
             .about-photo img {
-                width: clamp(180px, 70vw, 260px);
+                width: clamp(200px, 70vw, 280px);
             }
 
             .services-list {
@@ -793,11 +812,11 @@
 
             .certificates-detailed {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 2rem;
             }
 
             .certificate-card {
-                padding: 1.5rem;
+                padding: 2rem;
             }
 
             .certificate-icon {
@@ -806,88 +825,92 @@
 
             .quote {
                 font-size: clamp(1rem, 4vw, 1.2rem);
-                padding: 1.5rem;
-                margin: 1.5rem auto;
+                padding: 2rem;
+                margin: 2rem auto;
             }
 
             .socialContainer {
-                width: clamp(40px, 10vw, 45px);
-                height: clamp(40px, 10vw, 45px);
+                width: clamp(45px, 10vw, 50px);
+                height: clamp(45px, 10vw, 50px);
             }
 
             .socialSvg {
-                width: clamp(12px, 3.5vw, 14px);
+                width: clamp(14px, 3.5vw, 16px);
             }
 
             .section-local {
-                padding: clamp(30px, 8vw, 40px) clamp(8px, 2.5vw, 10px);
+                padding: clamp(40px, 8vw, 60px) clamp(8px, 2.5vw, 10px);
             }
 
             .section-local h2 {
-                font-size: clamp(1.6rem, 5vw, 2rem);
+                font-size: clamp(1.8rem, 5vw, 2.2rem);
             }
 
             .descricao-local {
-                font-size: clamp(0.9rem, 3.5vw, 1rem);
-                margin-bottom: 1.5rem;
+                font-size: clamp(1rem, 3.5vw, 1.1rem);
+                margin-bottom: 2rem;
             }
 
             .mapa-container {
-                padding-bottom: 70%;
+                padding-bottom: 60%;
                 border-radius: 8px;
             }
         }
 
         @media (max-width: 480px) {
             .hero h1 {
-                font-size: clamp(1.8rem, 7vw, 2.2rem);
+                font-size: clamp(2rem, 7vw, 2.8rem);
             }
 
             .hero .subtitle {
-                font-size: clamp(1rem, 4.5vw, 1.3rem);
+                font-size: clamp(1.1rem, 4.5vw, 1.4rem);
             }
 
-            .hero .description {
-                font-size: clamp(0.9rem, 4vw, 1rem);
-            }
-
-            .typing-container {
-                padding: clamp(0.8rem, 3vw, 1.2rem) clamp(0.6rem, 2.5vw, 0.8rem);
+            .intro-content {
+                padding: clamp(1.2rem, 3vw, 1.5rem);
                 border-radius: 12px;
             }
 
-            .section h2 {
-                font-size: clamp(1.6rem, 5vw, 2rem);
-            }
-
-            .about-photo img {
-                width: clamp(160px, 65vw, 220px);
-            }
-
-            .section-local h2 {
+            .intro-content h2 {
                 font-size: clamp(1.4rem, 4.5vw, 1.8rem);
             }
 
+            .intro-content p {
+                font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+            }
+
+            .section h2 {
+                font-size: clamp(1.8rem, 5vw, 2.2rem);
+            }
+
+            .about-photo img {
+                width: clamp(180px, 65vw, 240px);
+            }
+
+            .section-local h2 {
+                font-size: clamp(1.6rem, 4.5vw, 2rem);
+            }
+
             .descricao-local {
-                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+                font-size: clamp(0.9rem, 3.5vw, 1rem);
             }
 
             .mapa-container {
-                padding-bottom: 80%;
+                padding-bottom: 70%;
             }
 
             .cta-button {
-                padding: clamp(10px, 3vw, 12px) clamp(20px, 5vw, 25px);
-                font-size: clamp(0.85rem, 3vw, 1rem);
+                padding: clamp(12px, 3vw, 15px) clamp(25px, 5vw, 30px);
+                font-size: clamp(0.9rem, 3vw, 1.1rem);
             }
 
             .socialContainer {
-                width: clamp(35px, 9vw, 40px);
-                height: clamp(35px, 9vw, 40px);
+                width: clamp(40px, 9vw, 45px);
+                height: clamp(40px, 9vw, 45px);
             }
 
             .socialSvg {
-                width: clamp(10px, 3vw, 12px);
+                width: clamp(12px, 3vw, 14px);
             }
         }
     </style>
@@ -960,12 +983,12 @@
     <nav class="container">
         <div class="logo">Henry Rondon</div>
         <ul class="nav-menu" id="navMenu">
-            <li><a href="#home">Início</a></li>
-            <li><a href="#about">Sobre</a></li>
-            <li><a href="#certificates">Certificações</a></li>
-            <li><a href="#services">Serviços</a></li>
-            <li><a href="#methodology">Metodologia</a></li>
-            <li><a href="#contact">Contato</a></li>
+            <li style="--index: 1;"><a href="#home">Início</a></li>
+            <li style="--index: 2;"><a href="#about">Sobre</a></li>
+            <li style="--index: 3;"><a href="#certificates">Certificações</a></li>
+            <li style="--index: 4;"><a href="#services">Serviços</a></li>
+            <li style="--index: 5;"><a href="#methodology">Metodologia</a></li>
+            <li style="--index: 6;"><a href="#contact">Contato</a></li>
         </ul>
         <button class="mobile-menu" id="mobileMenu">☰</button>
     </nav>
@@ -976,11 +999,17 @@
         <div class="container">
             <div class="hero-content">
                 <h1>Henry Rondon</h1>
-                <div class="typing-container">
-                    <p class="subtitle">Assessor de Investimentos Certificado</p>
-                    <p class="description">Planejamento financeiro estratégico para proteger e multiplicar seu patrimônio com segurança e inteligência, em parceria com a MGM Investimentos e BTG Pactual.</p>
-                </div>
+                <p class="subtitle">Assessor de Investimentos da MGM</p>
                 <a href="#contact" class="cta-button">Agendar Consultoria</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="intro-section">
+        <div class="container">
+            <div class="intro-content">
+                <h2>Assessor de Investimentos Certificado</h2>
+                <p>Planejamento financeiro estratégico para proteger e multiplicar seu patrimônio com segurança e inteligência, em parceria com a MGM Investimentos e BTG Pactual.</p>
             </div>
         </div>
     </section>
@@ -1207,6 +1236,26 @@
     }
 
     setInterval(atualizarCotacoes, 8000);
+
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections and cards
+    document.querySelectorAll('.section, .card, .testimonial-card, .certificate-card, .step, .service-item').forEach(el => {
+        observer.observe(el);
+    });
 </script>
 </body>
 </html>
