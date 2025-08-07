@@ -46,6 +46,12 @@
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
             margin: 0;
+            padding: 0;
+        }
+
+        html {
+            margin: 0;
+            padding: 0;
         }
 
         .container {
@@ -158,6 +164,7 @@
             font-weight: 700;
             color: var(--primary-gold);
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
         .logo:hover {
@@ -294,6 +301,37 @@
             box-shadow: 0 8px 25px rgba(37, 166, 224, 0.5);
         }
 
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(45deg, var(--primary-gold), var(--accent-blue));
+            color: var(--white);
+            width: clamp(50px, 12vw, 60px);
+            height: clamp(50px, 12vw, 60px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(37, 166, 224, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(37, 166, 224, 0.5);
+        }
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -305,7 +343,7 @@
         }
 
         .intro-section {
-            padding: clamp(60px, 12vw, 80px) 0;
+            padding: clamp(40px, 8vw, 60px) 0;
             background: rgba(7, 22, 46, 0.3);
             text-align: center;
         }
@@ -616,6 +654,12 @@
             box-shadow: 0 8px 25px rgba(0, 114, 177, 0.4);
         }
 
+        .containerTwo:hover {
+            background-color: #EA4335;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(234, 67, 53, 0.4);
+        }
+
         .socialSvg {
             width: clamp(16px, 4vw, 20px);
         }
@@ -719,7 +763,13 @@
 
         @media (max-width: 768px) {
             body {
-                padding-top: env(safe-area-inset-top);
+                padding: 0;
+                margin: 0;
+            }
+
+            html {
+                padding: 0;
+                margin: 0;
             }
 
             #cotacoes-bar {
@@ -769,13 +819,13 @@
             }
 
             .hero {
-                padding: calc(100px + env(safe-area-inset-top)) 0 60px;
-                min-height: 100vh;
+                padding: calc(100px + env(safe-area-inset-top)) 0 40px;
+                min-height: 70vh;
                 background-attachment: scroll;
             }
 
             .intro-section {
-                padding: clamp(40px, 8vw, 60px) 0;
+                padding: clamp(30px, 6vw, 40px) 0;
             }
 
             .intro-content {
@@ -855,15 +905,32 @@
                 padding-bottom: 60%;
                 border-radius: 8px;
             }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: clamp(45px, 10vw, 50px);
+                height: clamp(45px, 10vw, 50px);
+                font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+            }
         }
 
         @media (max-width: 480px) {
+            .hero {
+                min-height: 60vh;
+                padding: calc(100px + env(safe-area-inset-top)) 0 30px;
+            }
+
             .hero h1 {
                 font-size: clamp(2rem, 7vw, 2.8rem);
             }
 
             .hero .subtitle {
                 font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+            }
+
+            .intro-section {
+                padding: clamp(25px, 5vw, 35px) 0;
             }
 
             .intro-content {
@@ -911,6 +978,38 @@
 
             .socialSvg {
                 width: clamp(12px, 3vw, 14px);
+            }
+
+            .back-to-top {
+                position: fixed;
+                bottom: 40px;
+                right: 40px;
+                display: none;
+                background: #000;
+                color: #fff;
+                padding: 10px 15px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-size: 20px;
+                z-index: 999;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            .back-to-top.show {
+                display: block;
+            }
+        }
+
+        /* Correção para Safari iOS */
+        @supports (-webkit-appearance: none) {
+            body {
+                padding-top: 0;
+                margin-top: 0;
+            }
+
+            .hero {
+                padding-top: calc(120px + constant(safe-area-inset-top));
+                padding-top: calc(120px + env(safe-area-inset-top));
             }
         }
     </style>
@@ -981,7 +1080,7 @@
         </div>
     </div>
     <nav class="container">
-        <div class="logo">Henry Rondon</div>
+        <div class="logo" id="logo">Henry Rondon</div>
         <ul class="nav-menu" id="navMenu">
             <li style="--index: 1;"><a href="#home">Início</a></li>
             <li style="--index: 2;"><a href="#about">Sobre</a></li>
@@ -1000,7 +1099,7 @@
             <div class="hero-content">
                 <h1>Henry Rondon</h1>
                 <p class="subtitle">Assessor de Investimentos da MGM</p>
-                <a href="#contact" class="cta-button">Agendar Consultoria</a>
+                <a href="#contact" class="cta-button">Agendar Reunião</a>
             </div>
         </div>
     </section>
@@ -1009,7 +1108,7 @@
         <div class="container">
             <div class="intro-content">
                 <h2>Assessor de Investimentos Certificado</h2>
-                <p>Planejamento financeiro estratégico para proteger e multiplicar seu patrimônio com segurança e inteligência, em parceria com a MGM Investimentos e BTG Pactual.</p>
+                <p>Assessoria de investimentos personalizada com o objetivo de proteger e multiplicar seu patrimônio com segurança e inteligência, em sociedade com a MGM Investimentos e BTG Pactual.</p>
             </div>
         </div>
     </section>
@@ -1023,11 +1122,11 @@
             <div class="cards-grid">
                 <div class="card">
                     <h4>Atendimento Personalizado</h4>
-                    <p>Certificado pela ANCORD, ofereço orientação financeira sob medida, alinhada aos objetivos e perfil de cada cliente.</p>
+                    <p>Certificado pela ANCORD, ofereço assessoria sob medida, alinhada aos objetivos e perfil de cada cliente.</p>
                 </div>
                 <div class="card">
                     <h4>Estratégia e Transparência</h4>
-                    <p>Proporciono clareza e estratégias personalizadas, garantindo que seus investimentos reflitam suas metas de longo prazo.</p>
+                    <p>Proporciono clareza e estratégias personalizadas, visando que seus investimentos reflitam suas metas de curto, médio e/ou longo prazo.</p>
                 </div>
             </div>
             <div class="quote">
@@ -1054,7 +1153,7 @@
                     <div class="certificate-image-container">
                         <img src="ancord.png" alt="Certificação ANCORD" class="certificate-image" loading="lazy">
                     </div>
-                    <p class="certificate-description">Certificação essencial para assessores de investimento, garantindo expertise em mercados financeiros e conformidade regulatória.</p>
+                    <p class="certificate-description">Certificação essencial para assessores de investimento, proporcionando expertise em mercados financeiros e conformidade regulatória.</p>
                     <div class="certificate-details">
                         <h5>Competências:</h5>
                         <ul>
@@ -1115,7 +1214,7 @@
                 Soluções financeiras personalizadas para proteger e crescer seu patrimônio.
             </p>
             <div class="services-list">
-                <div class="service-item">Planejamento financeiro estratégico</div>
+                <div class="service-item">Assessoria de Investimento Estratégica</div>
                 <div class="service-item">Alocação diversificada de ativos</div>
                 <div class="service-item">Investimentos em renda fixa e variável</div>
                 <div class="service-item">Previdência e sucessão patrimonial</div>
@@ -1157,7 +1256,7 @@
     <section id="onde_estamos" class="section-local">
         <div class="container-local">
             <h2>Onde Estamos</h2>
-            <p class="descricao-local">Visite nosso escritório na MGM Investimentos, credenciado ao BTG Pactual.</p>
+            <p class="descricao-local">Visite nosso escritório na MGM Investimentos, contratado ao BTG Pactual.</p>
             <div class="mapa-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.434853219964!2d-46.180764023761384!3d-23.516857159960452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cdd93b514e03df%3A0xfdf7966507263db7!2sMGM%20Investimentos!5e0!3m2!1spt-BR!2sbr!4v1754070377209!5m2!1spt-BR!2sbr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -1168,10 +1267,10 @@
         <div class="container">
             <h2>Entre em Contato</h2>
             <p style="text-align: center; font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: clamp(1.5rem, 5vw, 2rem); color: var(--primary-gold);">
-                Agende uma consultoria para discutir seus objetivos financeiros.
+                Agende uma reunião para discutir seus objetivos financeiros.
             </p>
             <div class="card1">
-                <a href="https://wa.me/5511960573657?text=Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os" class="socialContainer containerFour" target="_blank" title="WhatsApp - Agendar Consultoria">
+                <a href="https://wa.me/5511960573657?text=Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os" class="socialContainer containerFour" target="_blank" title="WhatsApp - Agendar Reunião">
                     <svg class="socialSvg whatsappSvg" viewBox="0 0 16 16">
                         <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
                     </svg>
@@ -1181,16 +1280,23 @@
                         <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212h2.401V9.25c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"></path>
                     </svg>
                 </a>
+                <a href="mailto:henry.rondon@mgminvestimentos.com.br" class="socialContainer containerTwo" target="_blank" title="Email - henry.rondon@mgminvestimentos.com.br">
+                    <svg class="socialSvg emailSvg" viewBox="0 0 16 16">
+                        <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4.697l-6.85 4.425a1 1 0 0 1-1.1 0L0 4.697Z"></path>
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
 </main>
 
+<a href="#" class="back-to-top" id="backToTop">↑</a>
+
 <footer>
     <div class="container">
         <p>&copy; 2025 Henry Rondon - Assessor de Investimentos Certificado.</p>
         <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
-            MGM Investimentos - Credenciado ao BTG Pactual
+            MGM Investimentos - Contratado ao BTG Pactual
         </p>
         <br>
         <a class="link_name" href="https://api.whatsapp.com/send?phone=5511960573657&text=Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os" target="_blank" rel="noopener noreferrer">
@@ -1203,21 +1309,44 @@
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobileMenu');
     const navMenu = document.getElementById('navMenu');
+    const logo = document.getElementById('logo');
+    const backToTop = document.getElementById('backToTop');
 
     mobileMenu.addEventListener('click', () => {
         navMenu.classList.toggle('active');
     });
 
-    // Smooth scrolling
+    // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             navMenu.classList.remove('active');
         });
+    });
+
+    // Scroll to top on logo click
+    logo.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Back to top button visibility + scroll to top on click
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTop.classList.add('show');
+        } else {
+            backToTop.classList.remove('show');
+        }
+    });
+
+    backToTop.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     // Simplified market quotes simulation
@@ -1256,6 +1385,7 @@
     document.querySelectorAll('.section, .card, .testimonial-card, .certificate-card, .step, .service-item').forEach(el => {
         observer.observe(el);
     });
+
 </script>
 </body>
 </html>
