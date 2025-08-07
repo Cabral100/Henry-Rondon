@@ -54,6 +54,48 @@
             padding: 0;
         }
 
+        /* Loading Page Styles */
+        .loading-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #061633;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-page.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-logo {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            animation: pulseLogo 1.5s ease-in-out infinite;
+            background-color: transparent;
+        }
+
+        /* Esconde a imagem mobile por padrão */
+        .mobile-logo {
+            display: none;
+        }
+
+
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -320,6 +362,7 @@
             visibility: hidden;
             transition: all 0.3s ease;
             z-index: 1000;
+            border: 2px solid var(--white);
         }
 
         .back-to-top.show {
@@ -328,8 +371,9 @@
         }
 
         .back-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(37, 166, 224, 0.5);
+            transform: translateY(-5px) rotate(360deg);
+            box-shadow: 0 8px 25px rgba(37, 166, 224, 0.6);
+            background: linear-gradient(45deg, var(--accent-blue), var(--primary-gold));
         }
 
         @keyframes fadeInUp {
@@ -772,6 +816,17 @@
                 margin: 0;
             }
 
+            .desktop-logo {
+                display: none;
+            }
+            .mobile-logo {
+                display: block;
+                width: 100vw;
+                height: 100vh;
+                object-fit: cover;
+            }
+
+
             #cotacoes-bar {
                 font-size: clamp(11px, 2.8vw, 13px);
                 padding: 10px 0;
@@ -831,10 +886,6 @@
             .intro-content {
                 padding: clamp(1.5rem, 4vw, 2rem);
                 border-radius: 15px;
-            }
-
-            .section {
-                padding: clamp(40px, 8vw, 60px) 0;
             }
 
             .cards-grid, .testimonials-grid {
@@ -916,6 +967,14 @@
         }
 
         @media (max-width: 480px) {
+            .loading-logo {
+                width: 100vw;
+                height: 100vh;
+                object-fit: cover;
+                animation: pulseLogo 1.5s ease-in-out infinite;
+                background-color: transparent;
+            }
+
             .hero {
                 min-height: 60vh;
                 padding: calc(100px + env(safe-area-inset-top)) 0 30px;
@@ -981,22 +1040,11 @@
             }
 
             .back-to-top {
-                position: fixed;
-                bottom: 40px;
-                right: 40px;
-                display: none;
-                background: #000;
-                color: #fff;
-                padding: 10px 15px;
-                border-radius: 5px;
-                text-decoration: none;
-                font-size: 20px;
-                z-index: 999;
-                transition: opacity 0.3s ease-in-out;
-            }
-
-            .back-to-top.show {
-                display: block;
+                bottom: 20px;
+                right: 20px;
+                width: clamp(40px, 9vw, 45px);
+                height: clamp(40px, 9vw, 45px);
+                font-size: clamp(1rem, 3vw, 1.2rem);
             }
         }
 
@@ -1015,68 +1063,75 @@
     </style>
 </head>
 <body>
+
+<div class="loading-page" id="loadingPage">
+    <img src="herohenry.png" alt="Logo Desktop" class="loading-logo desktop-logo">
+    <img src="loading.jpg" alt="Logo Mobile" class="loading-logo mobile-logo">
+</div>
+
+
 <header>
     <div id="cotacoes-bar">
         <div class="cotacoes-scroll">
-            <span class="cotacao-item">
-                <span class="cotacao-nome">IBOV</span>
-                <span class="cotacao-valor cotacao-alta">128,750.32</span>
-                <span class="cotacao-variacao trending-up">+1.45%</span>
-            </span>
+                <span class="cotacao-item">
+                    <span class="cotacao-nome">IBOV</span>
+                    <span class="cotacao-valor cotacao-alta">128,750.32</span>
+                    <span class="cotacao-variacao trending-up">+1.45%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">IFIX</span>
-                <span class="cotacao-valor cotacao-alta">3,489.67</span>
-                <span class="cotacao-variacao trending-up">+0.95%</span>
-            </span>
+                    <span class="cotacao-nome">IFIX</span>
+                    <span class="cotacao-valor cotacao-alta">3,489.67</span>
+                    <span class="cotacao-variacao trending-up">+0.95%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">S&P 500</span>
-                <span class="cotacao-valor cotacao-alta">4,612.45</span>
-                <span class="cotacao-variacao trending-up">+1.02%</span>
-            </span>
+                    <span class="cotacao-nome">S&P 500</span>
+                    <span class="cotacao-valor cotacao-alta">4,612.45</span>
+                    <span class="cotacao-variacao trending-up">+1.02%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">NASDAQ</span>
-                <span class="cotacao-valor cotacao-baixa">14,189.23</span>
-                <span class="cotacao-variacao trending-down">-0.45%</span>
-            </span>
+                    <span class="cotacao-nome">NASDAQ</span>
+                    <span class="cotacao-valor cotacao-baixa">14,189.23</span>
+                    <span class="cotacao-variacao trending-down">-0.45%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">DOW JONES</span>
-                <span class="cotacao-valor cotacao-alta">35,912.78</span>
-                <span class="cotacao-variacao trending-up">+0.67%</span>
-            </span>
+                    <span class="cotacao-nome">DOW JONES</span>
+                    <span class="cotacao-valor cotacao-alta">35,912.78</span>
+                    <span class="cotacao-variacao trending-up">+0.67%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">USD/BRL</span>
-                <span class="cotacao-valor cotacao-baixa">5.21</span>
-                <span class="cotacao-variacao trending-down">-0.82%</span>
-            </span>
+                    <span class="cotacao-nome">USD/BRL</span>
+                    <span class="cotacao-valor cotacao-baixa">5.21</span>
+                    <span class="cotacao-variacao trending-down">-0.82%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">VALE3</span>
-                <span class="cotacao-valor cotacao-alta">R$ 66.45</span>
-                <span class="cotacao-variacao trending-up">+2.34%</span>
-            </span>
+                    <span class="cotacao-nome">VALE3</span>
+                    <span class="cotacao-valor cotacao-alta">R$ 66.45</span>
+                    <span class="cotacao-variacao trending-up">+2.34%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">PETR4</span>
-                <span class="cotacao-valor cotacao-baixa">R$ 32.12</span>
-                <span class="cotacao-variacao trending-down">-1.56%</span>
-            </span>
+                    <span class="cotacao-nome">PETR4</span>
+                    <span class="cotacao-valor cotacao-baixa">R$ 32.12</span>
+                    <span class="cotacao-variacao trending-down">-1.56%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">BITCOIN</span>
-                <span class="cotacao-valor cotacao-alta">$68,450.00</span>
-                <span class="cotacao-variacao trending-up">+2.67%</span>
-            </span>
+                    <span class="cotacao-nome">BITCOIN</span>
+                    <span class="cotacao-valor cotacao-alta">$68,450.00</span>
+                    <span class="cotacao-variacao trending-up">+2.67%</span>
+                </span>
             <span class="separador">|</span>
             <span class="cotacao-item">
-                <span class="cotacao-nome">OURO</span>
-                <span class="cotacao-valor cotacao-alta">$2,048.90</span>
-                <span class="cotacao-variacao trending-up">+1.12%</span>
-            </span>
+                    <span class="cotacao-nome">OURO</span>
+                    <span class="cotacao-valor cotacao-alta">$2,048.90</span>
+                    <span class="cotacao-variacao trending-up">+1.12%</span>
+                </span>
         </div>
     </div>
     <nav class="container">
@@ -1306,6 +1361,18 @@
 </footer>
 
 <script>
+    // Loading page logic
+    window.addEventListener('load', () => {
+        const loadingPage = document.getElementById('loadingPage');
+        setTimeout(() => {
+            loadingPage.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }, 3000);
+    });
+
+    // Prevent scrolling while loading
+    document.body.style.overflow = 'hidden';
+
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobileMenu');
     const navMenu = document.getElementById('navMenu');
@@ -1385,7 +1452,6 @@
     document.querySelectorAll('.section, .card, .testimonial-card, .certificate-card, .step, .service-item').forEach(el => {
         observer.observe(el);
     });
-
 </script>
 </body>
 </html>
