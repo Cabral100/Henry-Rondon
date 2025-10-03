@@ -10,52 +10,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .link_name {
-            color: var(--primary-gold);
-            text-decoration: none;
-            font-style: normal;
-            font-weight: normal;
-            cursor: pointer;
-        }
-
         :root {
-            --primary-dark: #07162E;
-            --primary-gold: #25A6E0;
-            --secondary-blue: #0A2A5A;
-            --accent-blue: #25A6E0;
-            --light-blue: #E6F0FA;
+            --primary-dark: #0A0A0A;
+            --secondary-dark: #1A1A1A;
+            --accent-blue: #007BFF;
+            --text-light: #F0F0F0;
+            --text-secondary: #A0A0A0;
             --white: #FFFFFF;
-            --text-light: #F8FAFC;
-            --text-dark: #1E293B;
-            --success-green: #10B981;
-            --danger-red: #EF4444;
         }
+
+        html { scroll-behavior: auto !important; /* Disabled for JS smooth scroll */ }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Roboto', 'Arial', sans-serif;
-            line-height: 1.6;
+            line-height: 1.7;
             color: var(--text-light);
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-blue) 100%);
+            background-color: var(--primary-dark);
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
-            margin: 0;
-            padding: 0;
         }
-
-        html {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Loading Page Styles */
-        .loading-page {
+        
+        /* --- Loading Page --- */
+      .loading-page {
             position: fixed;
             top: 0;
             left: 0;
@@ -83,890 +61,191 @@
             animation: pulseLogo 1.5s ease-in-out infinite;
             background-color: transparent;
         }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.03); opacity: 1; } }
 
-        /* Esconde a imagem mobile por padrão */
-        .mobile-logo {
-            display: none;
-        }
-
-
-
-        @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        header {
-            background: rgba(7, 22, 46, 0.95);
-            backdrop-filter: blur(15px);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid var(--primary-gold);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
+        /* --- Ticker Bar (Top) --- */
         #cotacoes-bar {
-            background: #0A2A5A;
-            color: var(--text-light);
-            padding: 12px 0;
-            font-size: clamp(12px, 3vw, 14px);
-            overflow: hidden;
-            white-space: nowrap;
+            background: #000; color: var(--text-light); padding: 8px 0;
+            font-size: 14px; overflow: hidden; white-space: nowrap;
+            width: 100%; position: fixed; top: 0; left: 0; z-index: 1100;
         }
+        .cotacoes-scroll { display: inline-block; white-space: nowrap; padding-left: 100%; animation: scroll-left 40s linear infinite; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        .cotacao-item { display: inline-flex; align-items: center; margin-right: 25px; }
+        .cotacao-nome { font-weight: 600; margin-right: 8px; color: var(--accent-blue); }
+        .cotacao-valor { font-weight: 700; }
+        .cotacao-alta { color: #10B981; } .cotacao-baixa { color: #EF4444; }
+        .cotacao-variacao { font-size: 12px; margin-left: 6px; }
+        .trending-up::after { content: '▲'; margin-left: 4px; color: #10B981; }
+        .trending-down::after { content: '▼'; margin-left: 4px; color: #EF4444; }
 
-        .cotacoes-scroll {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: scroll-left 40s linear infinite;
+        /* --- Header --- */
+        header {
+            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            position: fixed; top: 37px; /* Height of ticker */ left: 0; right: 0;
+            z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        @keyframes scroll-left {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .cotacao-item {
-            display: inline-flex;
-            align-items: center;
-            margin-right: 25px;
-            padding: 8px 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .cotacao-item:hover {
-            background: rgba(37, 166, 224, 0.1);
-        }
-
-        .cotacao-nome {
-            font-weight: 600;
-            margin-right: 10px;
-            color: var(--primary-gold);
-        }
-
-        .cotacao-valor {
-            font-weight: 700;
-        }
-
-        .cotacao-alta {
-            color: var(--success-green);
-        }
-
-        .cotacao-baixa {
-            color: var(--danger-red);
-        }
-
-        .cotacao-variacao {
-            font-size: clamp(10px, 2.5vw, 12px);
-            margin-left: 8px;
-            opacity: 0.9;
-        }
-
-        .trending-up::after {
-            content: '▲';
-            font-size: clamp(10px, 2.5vw, 11px);
-            margin-left: 4px;
-        }
-
-        .trending-down::after {
-            content: '▼';
-            font-size: clamp(10px, 2.5vw, 11px);
-            margin-left: 4px;
-        }
-
-        .separador {
-            color: rgba(255, 255, 255, 0.3);
-            font-weight: bold;
-            font-size: clamp(14px, 3vw, 16px);
-            vertical-align: middle;
-            margin: 0 10px;
-        }
-
-        nav.container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.8rem 1.5rem;
-        }
-
-        .logo {
-            font-size: clamp(1.4rem, 4vw, 1.6rem);
-            font-weight: 700;
-            color: var(--primary-gold);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: clamp(1rem, 3vw, 1.5rem);
-        }
-
+        .container { max-width: 1200px; margin-left: auto; margin-right: auto; padding: 0 15px; }
+        nav.container { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; }
+        .logo { font-size: 1.6rem; font-weight: 700; color: var(--text-light); cursor: pointer; }
+        .logo span { color: var(--accent-blue); }
+        .nav-menu { display: flex; list-style: none; gap: 2rem; }
         .nav-menu a {
-            color: var(--text-light);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            position: relative;
-            padding: 0.5rem 0;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            opacity: 0;
-            animation: fadeInNav 0.5s ease forwards;
-            animation-delay: calc(0.1s * var(--index));
+            color: var(--text-secondary); text-decoration: none; transition: color 0.3s ease;
+            font-weight: 500; position: relative; padding: 0.5rem 0; font-size: 1rem;
         }
-
+        .nav-menu a:hover { color: var(--text-light); }
         .nav-menu a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background: var(--primary-gold);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: -5px; left: 0; background: var(--accent-blue);
+            transition: width 0.3s ease;
         }
-
-        .nav-menu a:hover {
-            color: var(--primary-gold);
+        .nav-menu a:hover::after { width: 100%; }
+        .header-cta {
+            color: var(--text-light); border: 1px solid var(--accent-blue); border-radius: 50px;
+            padding: 0.6rem 1.5rem; text-decoration: none; transition: all 0.3s ease;
         }
-
-        .nav-menu a:hover::after {
-            width: 100%;
+        .header-cta:hover { background-color: var(--accent-blue); color: var(--white); }
+        .mobile-menu-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.8rem; cursor: pointer; z-index: 2100; }
+        
+        /* --- Full Screen Mobile Menu --- */
+        .mobile-nav {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--primary-dark); z-index: 2000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transform: translateY(-20px);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
         }
+        .mobile-nav.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        .mobile-nav ul { list-style: none; text-align: center; }
+        .mobile-nav li { margin: 1.5rem 0; }
+        .mobile-nav a { color: var(--text-light); text-decoration: none; font-size: 2rem; font-weight: 500; }
+        .mobile-menu-close { position: absolute; top: 2rem; right: 2rem; font-size: 2.5rem; color: var(--white); background: none; border: none; cursor: pointer; }
 
-        .mobile-menu {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: clamp(1.2rem, 4vw, 1.5rem);
-            cursor: pointer;
-            padding: 0.5rem;
-        }
+        /* --- General Section Styling --- */
+        .section { padding: clamp(60px, 12vw, 80px) 0; width: 100%; }
+        .section h2 { font-size: clamp(2.2rem, 6vw, 3rem); text-align: center; margin-bottom: 1rem; font-weight: 700; }
+        .section h2 span { color: var(--accent-blue); }
+        .section-subtitle { text-align: center; font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: clamp(3rem, 8vw, 5rem); color: var(--text-secondary); max-width: 800px; margin-left:auto; margin-right:auto;}
 
-        .hero {
-            padding: calc(120px + env(safe-area-inset-top)) 0 60px;
-            text-align: center;
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(rgba(7, 22, 46, 0.8), rgba(7, 22, 46, 0.8)), url('herohenry.png') no-repeat center center;
+        /* --- Hero Section --- */
+        .hero { 
+            min-height: 80vh; display: flex; align-items: center; 
+            padding-top: 180px; /* Increased padding */
+            padding-bottom: 80px;
+            text-align: center; 
+            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.7)), url('herohenry.png') no-repeat center center;
             background-size: cover;
             background-attachment: fixed;
-            overflow: hidden;
         }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, var(--primary-dark) 0%, transparent 70%);
-            top: 0;
-            left: 0;
-            animation: pulse 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.1; }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 4.5rem);
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--white), var(--primary-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.3s forwards;
-        }
-
-        .hero .subtitle {
-            font-size: clamp(1.4rem, 5vw, 2rem);
-            color: var(--primary-gold);
-            margin-bottom: 2rem;
-            font-weight: 500;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.6s forwards;
-        }
-
+        .hero h1 { font-size: clamp(3rem, 8vw, 4.5rem); font-weight: 700; line-height: 1.2; }
+        .hero .subtitle { font-size: clamp(1.2rem, 4vw, 1.5rem); color: var(--text-secondary); max-width: 600px; margin: 1.5rem auto 2.5rem auto; }
         .cta-button {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--primary-gold), var(--accent-blue));
-            color: var(--white);
-            padding: clamp(15px, 4vw, 18px) clamp(30px, 6vw, 40px);
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: clamp(1rem, 3.5vw, 1.2rem);
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(37, 166, 224, 0.4);
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 1.2s forwards;
-            touch-action: manipulation;
-            margin-top: 1rem;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(37, 166, 224, 0.5);
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(45deg, var(--primary-gold), var(--accent-blue));
-            color: var(--white);
-            width: clamp(50px, 12vw, 60px);
-            height: clamp(50px, 12vw, 60px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(1.5rem, 4vw, 1.8rem);
-            text-decoration: none;
-            box-shadow: 0 6px 20px rgba(37, 166, 224, 0.4);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            border: 2px solid var(--white);
-        }
-
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-5px) rotate(360deg);
-            box-shadow: 0 8px 25px rgba(37, 166, 224, 0.6);
-            background: linear-gradient(45deg, var(--accent-blue), var(--primary-gold));
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInNav {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .intro-section {
-            padding: clamp(40px, 8vw, 60px) 0;
-            background: rgba(7, 22, 46, 0.3);
-            text-align: center;
-        }
-
-        .intro-content {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--primary-gold);
-            border-radius: 20px;
-            padding: clamp(2rem, 6vw, 3rem);
-            margin: 0 auto;
-            max-width: 900px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
-        .intro-content h2 {
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            color: var(--primary-gold);
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
-
-        .intro-content p {
-            font-size: clamp(1.1rem, 4vw, 1.3rem);
-            line-height: 1.7;
-            color: var(--text-light);
-            margin-bottom: 0;
-        }
-
-        .section {
-            padding: clamp(60px, 12vw, 80px) 0;
-            position: relative;
-        }
-
-        .section:nth-child(even) {
-            background: rgba(7, 22, 46, 0.1);
-        }
-
-        .section h2 {
-            font-size: clamp(2.2rem, 6vw, 2.8rem);
-            text-align: center;
-            margin-bottom: clamp(2rem, 6vw, 2.5rem);
-            color: var(--white);
-            font-weight: 700;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: clamp(2rem, 6vw, 2.5rem);
-            margin-top: clamp(2rem, 6vw, 2rem);
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--primary-gold);
-            border-radius: 20px;
-            padding: clamp(2rem, 6vw, 2rem);
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(37, 166, 224, 0.3);
-        }
-
-        .card h4 {
-            color: var(--primary-gold);
-            font-size: clamp(1.3rem, 4vw, 1.5rem);
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .about-photo {
-            text-align: center;
-            margin-bottom: clamp(2rem, 6vw, 3rem);
-        }
-
-        .about-photo img {
-            max-width: 100%;
-            width: clamp(250px, 80vw, 350px);
-            height: auto;
-            border-radius: 20px;
-            border: 3px solid var(--primary-gold);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .services-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: clamp(1.5rem, 5vw, 1.5rem);
-            margin-top: clamp(2rem, 6vw, 2rem);
-        }
-
-        .service-item {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            padding: clamp(1.2rem, 4vw, 1.5rem);
-            border-radius: 15px;
-            border-left: 4px solid var(--primary-gold);
-            transition: all 0.3s ease;
-            font-size: clamp(1rem, 3.5vw, 1.1rem);
-        }
-
-        .service-item:hover {
-            transform: translateX(8px);
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .service-item::before {
-            content: '✅';
-            margin-right: 1rem;
-            font-size: clamp(1.1rem, 3.5vw, 1.3rem);
-        }
-
-        .methodology-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: clamp(2rem, 6vw, 2rem);
-            margin-top: clamp(2rem, 6vw, 2rem);
-        }
-
-        .step {
-            text-align: center;
-            padding: clamp(2rem, 6vw, 2rem);
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .step:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(37, 166, 224, 0.2);
-        }
-
-        .step-number {
-            background: linear-gradient(45deg, var(--primary-gold), var(--accent-blue));
-            width: clamp(50px, 12vw, 60px);
-            height: clamp(50px, 12vw, 60px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-weight: 700;
-            font-size: clamp(1.1rem, 3.5vw, 1.4rem);
-        }
-
-        .certificates-detailed {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: clamp(2rem, 6vw, 2rem);
-            margin-top: clamp(2rem, 6vw, 2rem);
-        }
-
-        .certificate-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--primary-gold);
-            border-radius: 20px;
-            padding: clamp(2rem, 6vw, 2rem);
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        .certificate-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(37, 166, 224, 0.3);
-        }
-
-        .certificate-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .certificate-icon {
-            font-size: clamp(2rem, 6vw, 2.5rem);
-            margin-right: 1rem;
-            background: linear-gradient(45deg, var(--primary-gold), var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .certificate-title {
-            color: var(--white);
-            font-size: clamp(1.2rem, 4vw, 1.4rem);
-            font-weight: 700;
-        }
-
-        .certificate-institution {
-            color: var(--primary-gold);
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
-            opacity: 0.9;
-            font-weight: 500;
-        }
-
-        .certificate-description {
-            color: var(--text-light);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-            font-size: clamp(0.95rem, 3.5vw, 1rem);
-        }
-
-        .certificate-image-container {
-            margin: 1rem 0;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--primary-gold);
-        }
-
-        .certificate-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-
-        .certificate-image:hover {
-            transform: scale(1.03);
-        }
-
-        .certificate-details {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1rem;
-            border-left: 4px solid var(--primary-gold);
-        }
-
-        .certificate-details h5 {
-            color: var(--primary-gold);
-            margin-bottom: 0.8rem;
-            font-size: clamp(0.95rem, 3.5vw, 1rem);
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .certificate-details ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .certificate-details li {
-            padding: 0.4rem 0;
-            color: var(--text-light);
-            font-size: clamp(0.9rem, 3.5vw, 0.95rem);
-            position: relative;
-            padding-left: 1.8rem;
-        }
-
-        .certificate-details li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--success-green);
-            font-weight: bold;
-        }
-
-        .quote {
-            text-align: center;
-            font-size: clamp(1.2rem, 4vw, 1.4rem);
-            font-style: italic;
-            color: var(--white);
-            margin: clamp(2rem, 6vw, 3rem) auto;
-            max-width: 90%;
-            padding: clamp(2rem, 6vw, 2rem);
-            border-left: 4px solid var(--primary-gold);
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-        }
-
-        .card1 {
-            width: fit-content;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: clamp(15px, 5vw, 20px);
-            gap: clamp(15px, 5vw, 20px);
-            margin: 0 auto;
-        }
-
-        .socialContainer {
-            width: clamp(50px, 12vw, 60px);
-            height: clamp(50px, 12vw, 60px);
-            background-color: rgba(44, 44, 44, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .containerFour:hover {
-            background-color: #128C7E;
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(18, 140, 126, 0.4);
-        }
-
-        .containerThree:hover {
-            background-color: #0072b1;
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 114, 177, 0.4);
-        }
-
-        .containerTwo:hover {
-            background-color: #EA4335;
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(234, 67, 53, 0.4);
-        }
-
-        .socialSvg {
-            width: clamp(16px, 4vw, 20px);
-        }
-
-        .socialSvg path {
-            fill: var(--white);
-        }
-
-        .socialContainer:hover .socialSvg {
-            animation: slide-in-top 0.3s both;
-        }
-
-        @keyframes slide-in-top {
-            0% { transform: translateY(-50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        .section-local {
-            background-color: var(--primary-dark);
-            color: var(--white);
-            padding: clamp(60px, 12vw, 60px) clamp(10px, 3vw, 15px);
-            text-align: center;
-        }
-
-        .container-local {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        .section-local h2 {
-            font-size: clamp(2rem, 5vw, 2.5rem);
-            margin-bottom: clamp(1rem, 3.5vw, 1.5rem);
-            font-weight: 700;
-        }
-
-        .descricao-local {
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            margin-bottom: clamp(2rem, 6vw, 2rem);
-            color: var(--light-blue);
-        }
-
-        .mapa-container {
-            position: relative;
-            padding-bottom: clamp(50%, 20vw, 60%);
-            height: 0;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .mapa-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: clamp(2rem, 6vw, 2rem);
-            margin-top: clamp(2rem, 6vw, 2rem);
-        }
-
-        .testimonial-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--primary-gold);
-            border-radius: 20px;
-            padding: clamp(2rem, 6vw, 2rem);
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(37, 166, 224, 0.3);
-        }
-
-        .testimonial-card p {
-            font-style: italic;
-            margin-bottom: 1rem;
-            font-size: clamp(1rem, 3.5vw, 1.1rem);
-        }
-
-        .testimonial-card h4 {
-            color: var(--primary-gold);
-            font-size: clamp(1rem, 3.5vw, 1.2rem);
-            font-weight: 500;
-        }
-
-        footer {
-            background: var(--primary-dark);
-            padding: clamp(3rem, 8vw, 3rem) 0;
-            text-align: center;
-            border-top: 2px solid var(--primary-gold);
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 0;
-                margin: 0;
-            }
-
-            html {
-                padding: 0;
-                margin: 0;
-            }
-
-            .desktop-logo {
-                display: none;
-            }
-            .mobile-logo {
-                display: block;
-                width: 100vw;
-                height: 100vh;
-                object-fit: cover;
-            }
-
-
-            #cotacoes-bar {
-                font-size: clamp(11px, 2.8vw, 13px);
-                padding: 10px 0;
-            }
-
-            .cotacao-item {
-                margin-right: 20px;
-                padding: 6px 12px;
-            }
-
-            .cotacao-nome {
-                margin-right: 8px;
-            }
-
-            .cotacao-variacao {
-                font-size: clamp(9px, 2.2vw, 11px);
-                margin-left: 6px;
-            }
-
-            .separador {
-                font-size: clamp(12px, 2.8vw, 14px);
-                margin: 0 8px;
-            }
-
-            .nav-menu {
-                display: none;
-                position: fixed;
-                top: calc(100px + env(safe-area-inset-top));
-                left: 0;
-                width: 100%;
-                background: rgba(7, 22, 46, 0.98);
-                backdrop-filter: blur(15px);
-                flex-direction: column;
-                padding: 1.5rem;
-                gap: 1rem;
-                z-index: 999;
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .mobile-menu {
-                display: block;
-            }
-
-            .hero {
-                padding: calc(100px + env(safe-area-inset-top)) 0 40px;
-                min-height: 70vh;
-                background-attachment: scroll;
-            }
-
-            .intro-section {
-                padding: clamp(30px, 6vw, 40px) 0;
-            }
-
-            .intro-content {
-                padding: clamp(1.5rem, 4vw, 2rem);
-                border-radius: 15px;
-            }
-
-            .cards-grid, .testimonials-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .card, .testimonial-card {
-                padding: 2rem;
-            }
-
-            .about-photo img {
-                width: clamp(200px, 70vw, 280px);
-            }
-
-            .services-list {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .methodology-steps {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .certificates-detailed {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .certificate-card {
-                padding: 2rem;
-            }
-
-            .certificate-icon {
-                font-size: clamp(1.8rem, 5vw, 2rem);
-            }
-
-            .quote {
-                font-size: clamp(1rem, 4vw, 1.2rem);
-                padding: 2rem;
-                margin: 2rem auto;
-            }
-
-            .socialContainer {
-                width: clamp(45px, 10vw, 50px);
-                height: clamp(45px, 10vw, 50px);
-            }
-
-            .socialSvg {
-                width: clamp(14px, 3.5vw, 16px);
-            }
-
-            .section-local {
-                padding: clamp(40px, 8vw, 60px) clamp(8px, 2.5vw, 10px);
-            }
-
-            .section-local h2 {
-                font-size: clamp(1.8rem, 5vw, 2.2rem);
-            }
-
-            .descricao-local {
-                font-size: clamp(1rem, 3.5vw, 1.1rem);
-                margin-bottom: 2rem;
-            }
-
-            .mapa-container {
-                padding-bottom: 60%;
-                border-radius: 8px;
-            }
-
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: clamp(45px, 10vw, 50px);
-                height: clamp(45px, 10vw, 50px);
-                font-size: clamp(1.2rem, 3.5vw, 1.5rem);
-            }
-        }
-
-        @media (max-width: 480px) {
+            display: inline-block; background: var(--accent-blue); color: var(--white); padding: 1rem 2.5rem;
+            text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem;
+            transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3); border: none; cursor: pointer;
+        }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4); }
+
+        /* --- Two-Column Layout --- */
+        .two-col-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 5rem; }
+        .two-col-layout:last-child { margin-bottom: 0; }
+        .two-col-layout.image-right .col-image { order: 2; } /* Default desktop behavior */
+        .col-text h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .col-text h4 { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 400; }
+        #about .col-image img { max-width: 350px; /* Reduced size */ margin: 0 auto; display: block;}
+        .col-image img { width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        
+        /* --- Jornada Section --- */
+        .journey-item { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: center; padding: 2rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; margin-bottom: 2rem; }
+        .journey-number { font-size: clamp(6rem, 20vw, 10rem); font-weight: 700; color: var(--accent-blue); line-height: 1; text-align: center; opacity: 0.5; }
+        .journey-text h3 { font-size: 1.8rem; color: var(--accent-blue); }
+        .journey-text h4 { font-size: 1.2rem; color: var(--text-light); margin-bottom: 1rem; }
+
+        /* --- Legacy (Timeline) Section --- */
+        .legacy-timeline { 
+            display: flex; 
+            justify-content: space-between; 
+            position: relative; 
+            margin-top: 4rem; 
+        }
+        .legacy-timeline::before { 
+            content: ''; 
+            position: absolute; 
+            top: 30px; 
+            left: 10%; 
+            width: 80%; 
+            height: 2px; 
+            background-color: rgba(0, 123, 255, 0.3); 
+            z-index: 0; 
+        }
+        .legacy-step { 
+            text-align: center; 
+            width: 20%; 
+            position: relative; 
+            z-index: 1; /* Garante que o ícone fique sobre a linha */
+        }
+        .legacy-icon { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%; 
+            background-color: var(--secondary-dark); 
+            border: 2px solid var(--accent-blue); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 1rem auto; 
+            font-size: 1.8rem; 
+            color: var(--accent-blue); 
+        }
+        .legacy-step h4 { font-size: 1.1rem; }
+
+        /* --- Certifications Section --- */
+        .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .cert-card { background: var(--secondary-dark); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 2rem; text-align: center; }
+        .cert-header { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .cert-title { font-size: 1.4rem; font-weight: 700; }
+        .cert-card img { max-width: 250px; width: 100%; height: auto; border-radius: 10px; margin-bottom: 1.5rem; }
+
+        /* --- Contact Form Section --- */
+        .contact-form-section { background: var(--secondary-dark); border-radius: 20px; padding: 4rem 2rem; }
+        .contact-form-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .form-fields { display: flex; flex-direction: column; gap: 1rem; }
+        .form-field, input.form-field { 
+            background: var(--primary-dark); border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 10px; padding: 1rem; color: var(--text-light); font-family: 'Roboto', sans-serif; font-size: 1rem;
+        }
+        input.form-field::placeholder { color: var(--text-secondary); }
+        input.form-field:focus { border-color: var(--accent-blue); outline: none; }
+        .form-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .investment-option { text-align: center; cursor: pointer; transition: background-color 0.3s, border-color 0.3s; }
+        .investment-option.active { background-color: rgba(0, 123, 255, 0.2); border-color: var(--accent-blue); }
+
+        /* --- Map Section --- */
+        #location { padding-bottom: 0; }
+        #location iframe { width: 100%; height: 450px; border: 0; border-radius: 15px; }
+
+        /* --- Saiba Mais Section --- */
+        .saiba-mais { background: var(--secondary-dark); padding: 4rem 0; text-align: center; }
+        .saiba-mais h3 { font-size: 2rem; margin-bottom: 1.5rem; }
+
+        /* --- Utilities & Footer --- */
+        .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+        .back-to-top, .whatsapp-float { position: fixed; right: 20px; border-radius: 50%; box-shadow: 0 6px 20px rgba(0,0,0,0.3); z-index: 999; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .back-to-top { bottom: 20px; background: var(--accent-blue); color: var(--white); width: 50px; height: 50px; font-size: 1.8rem; text-decoration: none; opacity: 0; visibility: hidden; }
+        .back-to-top.show { opacity: 1; visibility: visible; }
+        .whatsapp-float { bottom: 80px; background-color: #25D366; width: 60px; height: 60px; }
+        .whatsapp-icon { width: 32px; height: 32px; fill: white; }
+        footer { background: #000; padding: 3rem 15px; text-align: center; }
+        .footer-socials { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
+        .social-icon { color: var(--text-secondary); text-decoration: none; font-size: 1.5rem; transition: color 0.3s; }
+        .social-icon:hover { color: var(--accent-blue); }
+        .footer-disclaimer { font-size: 0.75rem; color: var(--text-secondary); text-align: justify; margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; opacity: 0.7;}
+        .link_name { color: var(--accent-blue); text-decoration: none; }
+
+        /* --- Media Queries --- */
+        @media (max-width: 992px) {
             .loading-logo {
                 width: 100vw;
                 height: 100vh;
@@ -975,483 +254,467 @@
                 background-color: transparent;
             }
 
-            .hero {
-                min-height: 60vh;
-                padding: calc(100px + env(safe-area-inset-top)) 0 30px;
-            }
+            .two-col-layout, .journey-item, .contact-form-layout { grid-template-columns: 1fr; }
+            
+            /* Ajuste 2: Garante que a imagem venha sempre depois do texto no mobile */
+            .two-col-layout .col-text { order: 1; }
+            .two-col-layout .col-image { order: 2; margin-bottom: 2rem; }
+            .two-col-layout.image-right .col-image { order: 2; } /* Mantém a ordem se a classe já estiver lá */
 
-            .hero h1 {
-                font-size: clamp(2rem, 7vw, 2.8rem);
-            }
+            .journey-number { text-align: left; font-size: 6rem; }
 
-            .hero .subtitle {
-                font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+            /* Ajuste 1: Timeline vertical com linha no mobile */
+            .legacy-timeline { 
+                flex-direction: column; 
+                align-items: flex-start;
+                gap: 2rem; 
+                padding-left: 50px; /* Espaço para a linha e ícones */
             }
-
-            .intro-section {
-                padding: clamp(25px, 5vw, 35px) 0;
+            .legacy-timeline::before { 
+                display: block;
+                left: 30px; 
+                top: 0;
+                width: 2px;
+                height: 100%;
+                transform: translateX(-50%);
             }
-
-            .intro-content {
-                padding: clamp(1.2rem, 3vw, 1.5rem);
-                border-radius: 12px;
+            .legacy-step {
+                width: 100%;
+                text-align: left;
+                position: relative; /* Para posicionar icones e textos */
+                padding-left: 80px; /* Espaço para o ícone e a margem */
             }
-
-            .intro-content h2 {
-                font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+            .legacy-icon {
+                margin: 0; 
+                position: absolute;
+                left: 0; /* Alinha o ícone na borda da padding-left do .legacy-step */
+                top: 0;
+                transform: translateX(0); /* Remove transform do left para alinhamento */
             }
-
-            .intro-content p {
-                font-size: clamp(0.95rem, 3.5vw, 1.1rem);
-            }
-
-            .section h2 {
-                font-size: clamp(1.8rem, 5vw, 2.2rem);
-            }
-
-            .about-photo img {
-                width: clamp(180px, 65vw, 240px);
-            }
-
-            .section-local h2 {
-                font-size: clamp(1.6rem, 4.5vw, 2rem);
-            }
-
-            .descricao-local {
-                font-size: clamp(0.9rem, 3.5vw, 1rem);
-            }
-
-            .mapa-container {
-                padding-bottom: 70%;
-            }
-
-            .cta-button {
-                padding: clamp(12px, 3vw, 15px) clamp(25px, 5vw, 30px);
-                font-size: clamp(0.9rem, 3vw, 1.1rem);
-            }
-
-            .socialContainer {
-                width: clamp(40px, 9vw, 45px);
-                height: clamp(40px, 9vw, 45px);
-            }
-
-            .socialSvg {
-                width: clamp(12px, 3vw, 14px);
-            }
-
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: clamp(40px, 9vw, 45px);
-                height: clamp(40px, 9vw, 45px);
-                font-size: clamp(1rem, 3vw, 1.2rem);
+            .legacy-step h4 {
+                 padding-top: 15px; /* Alinha o texto com o centro do ícone */
+                 margin-left: -20px; /* Ajusta a posição do texto */
             }
         }
-
-        /* Correção para Safari iOS */
-        @supports (-webkit-appearance: none) {
-            body {
-                padding-top: 0;
-                margin-top: 0;
+        @media (max-width: 768px) {
+            .loading-logo {
+                width: 100vw;
+                height: 100vh;
+                object-fit: cover;
+                animation: pulseLogo 1.5s ease-in-out infinite;
+                background-color: transparent;
             }
 
-            .hero {
-                padding-top: calc(120px + constant(safe-area-inset-top));
-                padding-top: calc(120px + env(safe-area-inset-top));
-            }
+            .nav-menu, .header-cta { display: none; }
+            .mobile-menu-toggle { display: block; }
         }
     </style>
 </head>
 <body>
 
-<div class="loading-page" id="loadingPage">
+    <div class="loading-page" id="loadingPage">
     <img src="herohenry.png" alt="Logo Desktop" class="loading-logo desktop-logo">
-    <img src="loading.jpg" alt="Logo Mobile" class="loading-logo mobile-logo">
-</div>
-
-
-<header>
+    </div>
+    
     <div id="cotacoes-bar">
         <div class="cotacoes-scroll">
-                <span class="cotacao-item">
-                    <span class="cotacao-nome">IBOV</span>
-                    <span class="cotacao-valor cotacao-alta">128,750.32</span>
-                    <span class="cotacao-variacao trending-up">+1.45%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">IFIX</span>
-                    <span class="cotacao-valor cotacao-alta">3,489.67</span>
-                    <span class="cotacao-variacao trending-up">+0.95%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">S&P 500</span>
-                    <span class="cotacao-valor cotacao-alta">4,612.45</span>
-                    <span class="cotacao-variacao trending-up">+1.02%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">NASDAQ</span>
-                    <span class="cotacao-valor cotacao-baixa">14,189.23</span>
-                    <span class="cotacao-variacao trending-down">-0.45%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">DOW JONES</span>
-                    <span class="cotacao-valor cotacao-alta">35,912.78</span>
-                    <span class="cotacao-variacao trending-up">+0.67%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">USD/BRL</span>
-                    <span class="cotacao-valor cotacao-baixa">5.21</span>
-                    <span class="cotacao-variacao trending-down">-0.82%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">VALE3</span>
-                    <span class="cotacao-valor cotacao-alta">R$ 66.45</span>
-                    <span class="cotacao-variacao trending-up">+2.34%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">PETR4</span>
-                    <span class="cotacao-valor cotacao-baixa">R$ 32.12</span>
-                    <span class="cotacao-variacao trending-down">-1.56%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">BITCOIN</span>
-                    <span class="cotacao-valor cotacao-alta">$68,450.00</span>
-                    <span class="cotacao-variacao trending-up">+2.67%</span>
-                </span>
-            <span class="separador">|</span>
-            <span class="cotacao-item">
-                    <span class="cotacao-nome">OURO</span>
-                    <span class="cotacao-valor cotacao-alta">$2,048.90</span>
-                    <span class="cotacao-variacao trending-up">+1.12%</span>
-                </span>
+            <span class="cotacao-item"><span class="cotacao-nome">IBOV</span><span class="cotacao-valor cotacao-alta">128,750</span><span class="cotacao-variacao trending-up">+1.45%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">IFIX</span><span class="cotacao-valor cotacao-alta">3,489</span><span class="cotacao-variacao trending-up">+0.95%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">S&P 500</span><span class="cotacao-valor cotacao-alta">4,612</span><span class="cotacao-variacao trending-up">+1.02%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">NASDAQ</span><span class="cotacao-valor cotacao-baixa">14,189</span><span class="cotacao-variacao trending-down">-0.45%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">USD/BRL</span><span class="cotacao-valor cotacao-baixa">5.21</span><span class="cotacao-variacao trending-down">-0.82%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">BITCOIN</span><span class="cotacao-valor cotacao-alta">$68,450</span><span class="cotacao-variacao trending-up">+2.67%</span></span>
         </div>
     </div>
-    <nav class="container">
-        <div class="logo" id="logo">Henry Rondon</div>
-        <ul class="nav-menu" id="navMenu">
-            <li style="--index: 1;"><a href="#home">Início</a></li>
-            <li style="--index: 2;"><a href="#about">Sobre</a></li>
-            <li style="--index: 3;"><a href="#certificates">Certificações</a></li>
-            <li style="--index: 4;"><a href="#services">Serviços</a></li>
-            <li style="--index: 5;"><a href="#methodology">Metodologia</a></li>
-            <li style="--index: 6;"><a href="#contact">Contato</a></li>
+
+    <header>
+        <nav class="container">
+            <div class="logo">Henry<span>Rondon</span></div>
+            <ul class="nav-menu">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#certifications">Certificações</a></li>
+                <li><a href="#solutions">Soluções</a></li>
+                <li><a href="#journey">Jornada</a></li>
+            </ul>
+            <a href="#contact" class="header-cta">Fale comigo</a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </nav>
+    </header>
+
+    <div class="mobile-nav" id="mobileNav">
+        <button class="mobile-menu-close" id="mobileMenuClose">×</button>
+        <ul>
+            <li><a href="#home">Início</a></li>
+            <li><a href="#about">Sobre</a></li>
+            <li><a href="#certifications">Certificações</a></li>
+            <li><a href="#solutions">Soluções</a></li>
+            <li><a href="#journey">Jornada</a></li>
+            <li><a href="#contact">Fale conosco</a></li>
         </ul>
-        <button class="mobile-menu" id="mobileMenu">☰</button>
-    </nav>
-</header>
-
-<main>
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Henry Rondon</h1>
-                <p class="subtitle">Assessor de Investimentos da MGM</p>
-                <a href="#contact" class="cta-button">Agendar Reunião</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="intro-section">
-        <div class="container">
-            <div class="intro-content">
-                <h2>Assessor de Investimentos Certificado</h2>
-                <p>Assessoria de investimentos personalizada com o objetivo de proteger e multiplicar seu patrimônio com segurança e inteligência, em sociedade com a MGM Investimentos e BTG Pactual.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="section">
-        <div class="container">
-            <h2>Sobre Mim</h2>
-            <div class="about-photo">
-                <img src="henry.jpg" alt="Henry Rondon - Assessor de Investimentos" loading="lazy">
-            </div>
-            <div class="cards-grid">
-                <div class="card">
-                    <h4>Atendimento Personalizado</h4>
-                    <p>Certificado pela ANCORD, ofereço assessoria sob medida, alinhada aos objetivos e perfil de cada cliente.</p>
-                </div>
-                <div class="card">
-                    <h4>Estratégia e Transparência</h4>
-                    <p>Proporciono clareza e estratégias personalizadas, visando que seus investimentos reflitam suas metas de curto, médio e/ou longo prazo.</p>
-                </div>
-            </div>
-            <div class="quote">
-                "Construir riqueza é planejar com inteligência e proteger com cuidado."
-            </div>
-        </div>
-    </section>
-
-    <section id="certificates" class="section">
-        <div class="container">
-            <h2>Certificações</h2>
-            <p style="text-align: center; font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: clamp(1.5rem, 5vw, 2rem); color: var(--primary-gold);">
-                Credenciais que asseguram conhecimento técnico e compromisso ético.
-            </p>
-            <div class="certificates-detailed">
-                <div class="certificate-card">
-                    <div class="certificate-header">
-                        <span class="certificate-icon">🏅</span>
-                        <div>
-                            <h4 class="certificate-title">Certificação ANCORD</h4>
-                            <p class="certificate-institution">Associação Nacional das Corretoras</p>
-                        </div>
-                    </div>
-                    <div class="certificate-image-container">
-                        <img src="ancord.png" alt="Certificação ANCORD" class="certificate-image" loading="lazy">
-                    </div>
-                    <p class="certificate-description">Certificação essencial para assessores de investimento, proporcionando expertise em mercados financeiros e conformidade regulatória.</p>
-                    <div class="certificate-details">
-                        <h5>Competências:</h5>
-                        <ul>
-                            <li>Análise de perfil de risco</li>
-                            <li>Conhecimento de produtos financeiros</li>
-                            <li>Regulamentações da CVM e BACEN</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="certificate-card">
-                    <div class="certificate-header">
-                        <span class="certificate-icon">🎓</span>
-                        <div>
-                            <h4 class="certificate-title">Diploma em Negócios</h4>
-                            <p class="certificate-institution">Toronto School of Management</p>
-                        </div>
-                    </div>
-                    <div class="certificate-image-container">
-                        <img src="torornto.png" alt="Diploma Toronto School of Management" class="certificate-image" loading="lazy">
-                    </div>
-                    <p class="certificate-description">Formação internacional em administração, com foco em mercados globais e gestão patrimonial estratégica.</p>
-                    <div class="certificate-details">
-                        <h5>Áreas de Estudo:</h5>
-                        <ul>
-                            <li>Gestão financeira global</li>
-                            <li>Análise macroeconômica</li>
-                            <li>Estratégias de diversificação</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="testimonials" class="section">
-        <div class="container">
-            <h2>Depoimentos</h2>
-            <p style="text-align: center; font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: clamp(1.5rem, 5vw, 2rem); color: var(--primary-gold);">
-                O que meus clientes dizem sobre meu trabalho.
-            </p>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <p>"A orientação estratégica do Henry trouxe resultados consistentes e confiança para meus investimentos."</p>
-                    <h4>João S., Empresário</h4>
-                </div>
-                <div class="testimonial-card">
-                    <p>"Henry me ajudou a proteger meu patrimônio com estratégias claras e personalizadas."</p>
-                    <h4>Maria L., Advogada</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="section">
-        <div class="container">
-            <h2>Serviços</h2>
-            <p style="text-align: center; font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: clamp(1.5rem, 5vw, 2rem); color: var(--primary-gold);">
-                Soluções financeiras personalizadas para proteger e crescer seu patrimônio.
-            </p>
-            <div class="services-list">
-                <div class="service-item">Assessoria de Investimento Estratégica</div>
-                <div class="service-item">Alocação diversificada de ativos</div>
-                <div class="service-item">Investimentos em renda fixa e variável</div>
-                <div class="service-item">Previdência e sucessão patrimonial</div>
-            </div>
-        </div>
-    </section>
-
-    <section id="methodology" class="section">
-        <div class="container">
-            <h2>Metodologia</h2>
-            <p style="text-align: center; font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: clamp(1.5rem, 5vw, 2rem); color: var(--primary-gold);">
-                Um processo estruturado para resultados consistentes.
-            </p>
-            <div class="methodology-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h4>Diagnóstico</h4>
-                    <p>Análise detalhada do seu perfil e objetivos financeiros.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h4>Planejamento</h4>
-                    <p>Estratégia personalizada alinhada às suas metas.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h4>Execução</h4>
-                    <p>Alocação precisa com produtos financeiros de qualidade.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h4>Acompanhamento</h4>
-                    <p>Monitoramento contínuo e ajustes estratégicos.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="onde_estamos" class="section-local">
-        <div class="container-local">
-            <h2>Onde Estamos</h2>
-            <p class="descricao-local">Visite nosso escritório na MGM Investimentos, contratado ao BTG Pactual.</p>
-            <div class="mapa-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.434853219964!2d-46.180764023761384!3d-23.516857159960452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cdd93b514e03df%3A0xfdf7966507263db7!2sMGM%20Investimentos!5e0!3m2!1spt-BR!2sbr!4v1754070377209!5m2!1spt-BR!2sbr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="section">
-        <div class="container">
-            <h2>Entre em Contato</h2>
-            <p style="text-align: center; font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: clamp(1.5rem, 5vw, 2rem); color: var(--primary-gold);">
-                Agende uma reunião para discutir seus objetivos financeiros.
-            </p>
-            <div class="card1">
-                <a href="https://wa.me/5511960573657?text=Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os" class="socialContainer containerFour" target="_blank" title="WhatsApp - Agendar Reunião">
-                    <svg class="socialSvg whatsappSvg" viewBox="0 0 16 16">
-                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
-                    </svg>
-                </a>
-                <a href="https://www.linkedin.com/in/henry-rondon-b73b15297/" class="socialContainer containerThree" target="_blank" title="LinkedIn - Henry Rondon">
-                    <svg class="socialSvg linkedinSvg" viewBox="0 0 16 16">
-                        <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212h2.401V9.25c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"></path>
-                    </svg>
-                </a>
-                <a href="mailto:henry.rondon@mgminvestimentos.com.br" class="socialContainer containerTwo" target="_blank" title="Email - henry.rondon@mgminvestimentos.com.br">
-                    <svg class="socialSvg emailSvg" viewBox="0 0 16 16">
-                        <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4.697l-6.85 4.425a1 1 0 0 1-1.1 0L0 4.697Z"></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
-</main>
-
-<a href="#" class="back-to-top" id="backToTop">↑</a>
-
-<footer>
-    <div class="container">
-        <p>&copy; 2025 Henry Rondon - Assessor de Investimentos Certificado.</p>
-        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
-            MGM Investimentos - Contratado ao BTG Pactual
-        </p>
-        <br>
-        <a class="link_name" href="https://api.whatsapp.com/send?phone=5511960573657&text=Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os" target="_blank" rel="noopener noreferrer">
-            Desenvolvido por Lucas Cabral
-        </a>
     </div>
-</footer>
 
-<script>
-    // Loading page logic
-    window.addEventListener('load', () => {
+    <main>
+        <section id="home" class="hero section">
+            <div class="container">
+                 <div class="hero-content">
+                     <h1 class="animate-on-scroll">Assessoria de Investimentos <span>para o seu futuro.</span></h1>
+                     <p class="subtitle animate-on-scroll" style="transition-delay: 0.2s;">Estratégias inteligentes, atendimento personalizado e o foco nos seus objetivos.</p>
+                     <button id="heroCtaButton" class="cta-button animate-on-scroll" style="transition-delay: 0.4s;">Converse comigo</button>
+                 </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <div class="two-col-layout">
+                     <div class="col-image animate-on-scroll">
+                         <img src="henry.png" alt="Henry Rondon - Assessor de Investimentos">
+                     </div>
+                    <div class="col-text animate-on-scroll" style="transition-delay: 0.2s;">
+                        <h3>Henry Rondon & MGM Investimentos</h3>
+                        <p>Meu trabalho é oferecer uma assessoria de investimentos diferenciada, em total alinhamento com a filosofia da MGM Investimentos. Nascida em 2015, a MGM se destaca pelo profundo conhecimento e compromisso com a excelência.</p>
+                        <p>Como parte deste time e com o suporte do BTG Pactual, meu foco é proporcionar uma gestão patrimonial personalizada e integrada, desenvolvendo estratégias que vão além do tradicional, com base na confiança e transparência.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="certifications" class="section">
+            <div class="container">
+                <h2 class="animate-on-scroll">Minhas <span>Certificações</span></h2>
+                <p class="section-subtitle animate-on-scroll">Credenciais que asseguram conhecimento técnico e compromisso ético com seus investimentos.</p>
+                <div class="certs-grid">
+                    <div class="cert-card animate-on-scroll">
+                        <div class="cert-header">
+                            <div>
+                                <h4 class="cert-title">Certificação ANCORD</h4>
+                                <p style="color:var(--text-secondary)">Associação Nacional das Corretoras</p>
+                            </div>
+                        </div>
+                        <img src="ancord.png" alt="Selo ANCORD">
+                        <p>Certificação essencial para assessores de investimento, garantindo expertise em mercados financeiros e conformidade regulatória.</p>
+                    </div>
+                    <div class="cert-card animate-on-scroll" style="transition-delay: 0.2s;">
+                         <div class="cert-header">
+                            <div>
+                                <h4 class="cert-title">Diploma em Negócios</h4>
+                                <p style="color:var(--text-secondary)">Toronto School of Management</p>
+                            </div>
+                        </div>
+                        <img src="torornto.png" alt="Diploma Toronto School of Management">
+                        <p>Formação internacional em administração, com foco em mercados globais e gestão patrimonial estratégica.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solutions" class="section">
+            <div class="container">
+                <h2 class="animate-on-scroll">Conte com especialistas em cada uma das <span>Soluções Financeiras</span></h2>
+                <p class="section-subtitle animate-on-scroll">Acesso a um ecossistema completo para diversificar e potencializar seu patrimônio de forma inteligente.</p>
+
+                <div class="two-col-layout">
+                    <div class="col-text animate-on-scroll">
+                        <h3>Mesa de Renda Variável</h3>
+                        <h4>Exclusividade, estratégia e especialistas à sua disposição.</h4>
+                        <p>Nossa mesa dedica atenção exclusiva ao acompanhamento do mercado de ações, oferecendo sugestões personalizadas, operações estruturadas e acesso a oportunidades que vão além do básico.</p>
+                    </div>
+                    <div class="col-image animate-on-scroll"><img src="mesa.webp" alt="Mesa de Renda Variável"></div>
+                </div>
+
+                <div class="two-col-layout image-right">
+                    <div class="col-text animate-on-scroll">
+                        <h3>Investimentos OffShore</h3>
+                        <h4>Conquiste o mundo com inteligência.</h4>
+                        <p>Acesse os mercados mais maduros e sólidos do planeta com segurança e estratégia. Diversifique seu patrimônio globalmente.</p>
+                    </div>
+                    <div class="col-image animate-on-scroll"><img src="offshore.webp" alt="Investimentos OffShore"></div>
+                </div>
+
+                <div class="two-col-layout">
+                    <div class="col-text animate-on-scroll">
+                        <h3>Investimentos Alternativos</h3>
+                        <h4>Diversificação real com ativos fora do convencional.</h4>
+                        <p>Explore oportunidades em Private Equity, Criptoativos, Fundos Exclusivos, FIDCs e Real Estate. Alternativos para quem busca multiplicar o patrimônio com inteligência.</p>
+                    </div>
+                    <div class="col-image animate-on-scroll"><img src="alternativos.webp" alt="Investimentos Alternativos"></div>
+                </div>
+
+                <div class="two-col-layout image-right">
+                    <div class="col-text animate-on-scroll">
+                        <h3>Mesa de Renda Fixa</h3>
+                        <h4>Os melhores títulos do mercado para potencializar sua carteira.</h4>
+                        <p>Conte com um time que monitora diariamente as oportunidades em títulos públicos, debêntures, CRIs, CRAs, títulos bancários entre outros. Segurança e rentabilidade real com curadoria profissional.</p>
+                    </div>
+                    <div class="col-image animate-on-scroll"><img src="fixa.webp" alt="Mesa de Renda Fixa"></div>
+                </div>
+
+                <div class="two-col-layout">
+                    <div class="col-text animate-on-scroll">
+                        <h3>MGM Corporate</h3>
+                        <h4>Soluções financeiras sob medida para sua empresa.</h4>
+                        <p>Oferecemos assessoria especializada em investimentos para o caixa corporativo, operações compromissadas, estruturação de Hedge, estratégias patrimoniais para sócios e muito mais.</p>
+                    </div>
+                    <div class="col-image animate-on-scroll"><img src="mesa.webp" alt="MGM Corporate"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="journey" class="section">
+            <div class="container">
+                <h2 class="animate-on-scroll">Conheça a <span>Jornada do Cliente</span></h2>
+                <p class="section-subtitle animate-on-scroll">Um processo dinâmico e estruturado para garantir que suas decisões financeiras estejam sempre alinhadas à sua vida.</p>
+                
+                <div class="journey-item animate-on-scroll">
+                    <div class="journey-number">01</div>
+                    <div class="journey-text">
+                        <h3>Financial Planning</h3><h4>O ponto de partida estratégico</h4>
+                        <p>Antes de qualquer investimento, entendemos você. Analisamos sua carteira atual, identificamos seus objetivos e definimos seu perfil de investidor.</p>
+                    </div>
+                </div>
+                 <div class="journey-item animate-on-scroll">
+                    <div class="journey-number">02</div>
+                    <div class="journey-text">
+                        <h3>Diagnóstico Financeiro</h3><h4>Seu mapa patrimonial</h4>
+                        <p>Construímos um retrato completo da sua vida financeira, identificando oportunidades, riscos e pontos de atenção que orientarão todas as próximas decisões.</p>
+                    </div>
+                </div>
+                 <div class="journey-item animate-on-scroll">
+                    <div class="journey-number">03</div>
+                    <div class="journey-text">
+                        <h3>Apresentação e Implementação</h3><h4>Do plano à ação</h4>
+                        <p>Apresentamos seu projeto financeiro completo: uma carteira de investimentos robusta, estratégica e alinhada ao seu perfil e objetivos.</p>
+                    </div>
+                </div>
+                 <div class="journey-item animate-on-scroll">
+                    <div class="journey-number">04</div>
+                    <div class="journey-text">
+                        <h3>Acompanhamento e Revisão Estratégica</h3><h4>Evolução constante</h4>
+                        <p>Realizamos o monitoramento contínuo dos seus resultados, com revisões periódicas para ajustar estratégias, responder ao mercado e acompanhar as mudanças da sua vida.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="legacy" class="section">
+             <div class="container">
+                <h2 class="animate-on-scroll">Decisões que <span>atravessam gerações</span></h2>
+                <p class="section-subtitle animate-on-scroll">Um planejamento financeiro que pensa não apenas no hoje, mas no futuro que você está construindo.</p>
+                <div class="legacy-timeline">
+                    <div class="legacy-step animate-on-scroll" style="transition-delay: 0s;">
+                        <div class="legacy-icon">1</div><h4>Começo da jornada</h4>
+                    </div>
+                    <div class="legacy-step animate-on-scroll" style="transition-delay: 0.2s;">
+                        <div class="legacy-icon">2</div><h4>Acúmulo e proteção</h4>
+                    </div>
+                    <div class="legacy-step animate-on-scroll" style="transition-delay: 0.4s;">
+                        <div class="legacy-icon">3</div><h4>Expansão patrimonial</h4>
+                    </div>
+                    <div class="legacy-step animate-on-scroll" style="transition-delay: 0.6s;">
+                        <div class="legacy-icon">4</div><h4>Transição e legado</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact-form" class="section">
+            <div class="container">
+                <div class="contact-form-section animate-on-scroll">
+                     <div class="contact-form-layout">
+                         <div class="col-text">
+                             <h2>Quer entender como seus investimentos podem <span>render mais?</span></h2>
+                             <p class="section-subtitle" style="text-align: left; margin: 1rem 0 0 0;">Preencha o formulário e descubra novas oportunidades para o seu patrimônio.</p>
+                         </div>
+                         <div class="col-form">
+                             <div class="form-fields">
+                                 <input type="text" id="formName" class="form-field" placeholder="Nome completo">
+                                 <input type="tel" id="formPhone" class="form-field" placeholder="Telefone / WhatsApp">
+                                 <p style="margin-top: 1rem;">Sua carteira de investimentos:</p>
+                                 <div class="form-options">
+                                     <div class="form-field investment-option">R$ 0 - R$ 100 mil</div>
+                                     <div class="form-field investment-option">R$ 100 mil - R$ 300 mil</div>
+                                     <div class="form-field investment-option">R$ 300 mil - R$ 1 milhão</div>
+                                     <div class="form-field investment-option">Acima de R$ 1 milhão</div>
+                                 </div>
+                                 <button id="submitWhatsApp" class="cta-button" style="margin-top: 1.5rem; text-align: center;">Converse comigo</button>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="location" class="section">
+            <div class="container">
+                <h2 class="animate-on-scroll">Onde nos <span>encontrar</span></h2>
+                <div class="animate-on-scroll" style="margin-top: 2rem;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14633.559627247105!2d-46.18037661693474!3d-23.51847470726442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cdd8375668af17%3A0x357616331a8c7f2c!2sR.%20Vit%C3%B3rio%20Part%C3%AAnio%2C%20142%20-%20Socorro%2C%20Mogi%20das%20Cruzes%20-%20SP%2C%2008780-410!5e0!3m2!1spt-BR!2sbr!4v1759511540495!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section class="saiba-mais">
+            <div class="container">
+                <h3 class="animate-on-scroll">Conheça mais sobre a estrutura que me apoia.</h3>
+                <a href="https://mgminvestimentos.com.br/#inicio" target="_blank" rel="noopener noreferrer" class="cta-button animate-on-scroll" style="transition-delay: 0.2s; background: var(--secondary-dark); border: 1px solid var(--accent-blue);">
+                    Visite o site da MGM Investimentos
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <a href="#home" class="back-to-top" id="backToTop">↑</a>
+    <a href="https://wa.me/5511998928474?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="Fale conosco pelo WhatsApp">
+        <svg viewBox="0 0 24 24" class="whatsapp-icon"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.33 3.48 16.78L2 22L7.43 20.48C8.84 21.28 10.41 21.74 12.04 21.74C17.5 21.74 21.95 17.29 21.95 11.83C21.95 6.37 17.5 2 12.04 2ZM12.04 20.12C10.59 20.12 9.18 19.68 7.99 18.9L7.6 18.68L4.31 19.58L5.23 16.39L4.99 16.03C4.16 14.71 3.75 13.21 3.75 11.83C3.75 7.32 7.49 3.58 12.04 3.58C16.59 3.58 20.33 7.32 20.33 11.83C20.33 16.34 16.59 20.12 12.04 20.12ZM17.43 14.22C17.16 14.08 16.05 13.54 15.82 13.45C15.59 13.36 15.42 13.31 15.26 13.57C15.1 13.84 14.56 14.52 14.43 14.68C14.29 14.85 14.16 14.88 13.9 14.75C13.63 14.61 12.89 14.36 12.01 13.59C11.31 13.02 10.82 12.33 10.66 12.06C10.5 11.79 10.62 11.66 10.74 11.53C10.85 11.41 10.99 11.23 11.12 11.08C11.25 10.93 11.29 10.83 11.39 10.63C11.48 10.43 11.44 10.26 11.35 10.13C11.27 10 10.73 8.61 10.5 8.05C10.27 7.5 10.03 7.55 9.89 7.55C9.75 7.55 9.58 7.55 9.42 7.55C9.26 7.55 8.99 7.64 8.76 7.89C8.54 8.15 7.99 8.65 7.99 9.82C7.99 11 8.79 12.11 8.92 12.27C9.05 12.44 10.43 14.65 12.63 15.54C13.23 15.79 13.68 15.93 14.02 16.03C14.53 16.18 15.02 16.13 15.41 16.03C15.84 15.92 16.82 15.35 17.05 14.78C17.28 14.22 17.28 13.76 17.2 13.63C17.12 13.5 16.96 13.43 16.69 13.3Z"/></svg>
+    </a>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-socials">
+                <a href="https://wa.me/5511998928474?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." target="_blank" class="social-icon" title="WhatsApp">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.33 3.48 16.78L2 22L7.43 20.48C8.84 21.28 10.41 21.74 12.04 21.74C17.5 21.74 21.95 17.29 21.95 11.83C21.95 6.37 17.5 2 12.04 2ZM12.04 20.12C10.59 20.12 9.18 19.68 7.99 18.9L7.6 18.68L4.31 19.58L5.23 16.39L4.99 16.03C4.16 14.71 3.75 13.21 3.75 11.83C3.75 7.32 7.49 3.58 12.04 3.58C16.59 3.58 20.33 7.32 20.33 11.83C20.33 16.34 16.59 20.12 12.04 20.12ZM17.43 14.22C17.16 14.08 16.05 13.54 15.82 13.45C15.59 13.36 15.42 13.31 15.26 13.57C15.1 13.84 14.56 14.52 14.43 14.68C14.29 14.85 14.16 14.88 13.9 14.75C13.63 14.61 12.89 14.36 12.01 13.59C11.31 13.02 10.82 12.33 10.66 12.06C10.5 11.79 10.62 11.66 10.74 11.53C10.85 11.41 10.99 11.23 11.12 11.08C11.25 10.93 11.29 10.83 11.39 10.63C11.48 10.43 11.44 10.26 11.35 10.13C11.27 10 10.73 8.61 10.5 8.05C10.27 7.5 10.03 7.55 9.89 7.55C9.75 7.55 9.58 7.55 9.42 7.55C9.26 7.55 8.99 7.64 8.76 7.89C8.54 8.15 7.99 8.65 7.99 9.82C7.99 11 8.79 12.11 8.92 12.27C9.05 12.44 10.43 14.65 12.63 15.54C13.23 15.79 13.68 15.93 14.02 16.03C14.53 16.18 15.02 16.13 15.41 16.03C15.84 15.92 16.82 15.35 17.05 14.78C17.28 14.22 17.28 13.76 17.2 13.63C17.12 13.5 16.96 13.43 16.69 13.3Z"/>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/henry-rondon-b73b15297/" target="_blank" class="social-icon" title="LinkedIn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9A1.55 1.55 0 0 0 3.55 22h16.9a1.55 1.55 0 0 0 1.55-1.55V3.55A1.55 1.55 0 0 0 20.45 2ZM8.09 18.74H5.09V9.75h3v8.99ZM6.59 8.44a1.88 1.88 0 1 1 0-3.76 1.88 1.88 0 0 1 0 3.76Zm12.15 10.3h-3v-4.43c0-1.06-.02-2.42-1.48-2.42-1.48 0-1.71 1.15-1.71 2.34v4.51H9.55V9.75h2.88v1.32h.04c.4-.76 1.38-1.55 2.84-1.55 3.04 0 3.6 2 3.6 4.6v5.33Z"/></svg>
+                </a>
+            </div>
+            <p>MGM Invest © Todos os direitos reservados</p>
+            <a class="link_name" href="https://wa.me/5511960573657?text=Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os" target="_blank" rel="noopener noreferrer">Desenvolvido por Lucas Cabral</a>
+            <div class="footer-disclaimer">
+                <p><strong>OUVIDORIA BTG PACTUAL:</strong> 0800-722-0048 | ouvidoria@btgpactual.com</p>
+                <p>MGM Investimentos, CNPJ nº 23.123.647/0001-06 é uma empresa de assessoria de investimento devidamente registrada na CVM (Resolução CVM 178), atuando como preposto do Banco BTG Pactual S/A. O assessor de investimento não pode administrar ou gerir o patrimônio de investidores. O investimento em ações é um investimento de risco e rentabilidade passada não é garantia de rentabilidade futura. Para reclamações, contatar a Ouvidoria do Banco BTG Pactual S/A.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Loading Page ---
         const loadingPage = document.getElementById('loadingPage');
-        setTimeout(() => {
-            loadingPage.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }, 3000);
-    });
-
-    // Prevent scrolling while loading
-    document.body.style.overflow = 'hidden';
-
-    // Mobile menu toggle
-    const mobileMenu = document.getElementById('mobileMenu');
-    const navMenu = document.getElementById('navMenu');
-    const logo = document.getElementById('logo');
-    const backToTop = document.getElementById('backToTop');
-
-    mobileMenu.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-    });
-
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const target = document.querySelector(targetId);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-            navMenu.classList.remove('active');
+        window.addEventListener('load', () => {
+            setTimeout(() => { loadingPage.classList.add('hidden'); }, 500);
         });
-    });
 
-    // Scroll to top on logo click
-    logo.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+        // --- Mobile Menu ---
+        const toggleBtn = document.getElementById('mobileMenuToggle');
+        const closeBtn = document.getElementById('mobileMenuClose');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileNavLinks = mobileNav.querySelectorAll('a');
+        const openMenu = () => mobileNav.classList.add('active');
+        const closeMenu = () => mobileNav.classList.remove('active');
+        toggleBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        mobileNavLinks.forEach(link => link.addEventListener('click', closeMenu));
 
-    // Back to top button visibility + scroll to top on click
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTop.classList.add('show');
-        } else {
-            backToTop.classList.remove('show');
+        // --- Back to Top Button ---
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) backToTop.classList.add('show');
+            else backToTop.classList.remove('show');
+        });
+
+        // --- JS Smooth Scroll ---
+        function smoothScroll(target, duration) {
+            const targetElement = document.querySelector(target);
+            if (!targetElement) return;
+            const headerOffset = 100; // Offset for fixed header height
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+            const startPosition = window.pageYOffset;
+            const distance = targetPosition - startPosition;
+            let startTime = null;
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = ease(timeElapsed, startPosition, distance, duration);
+                window.scrollTo(0, run);
+                if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+            function ease(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+            requestAnimationFrame(animation);
         }
-    });
 
-    backToTop.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // Simplified market quotes simulation
-    function atualizarCotacoes() {
-        const cotacoes = document.querySelectorAll('.cotacao-valor');
-        const variacoes = document.querySelectorAll('.cotacao-variacao');
-
-        cotacoes.forEach((cotacao, index) => {
-            const isAlta = Math.random() > 0.5;
-            const variacao = variacoes[index];
-            cotacao.className = `cotacao-valor ${isAlta ? 'cotacao-alta' : 'cotacao-baixa'}`;
-            if (variacao) {
-                variacao.className = `cotacao-variacao ${isAlta ? 'trending-up' : 'trending-down'}`;
-            }
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                smoothScroll(targetId, 800);
+            });
         });
-    }
+        
+        // --- Botão Hero CTA Scroll ---
+        const heroCtaButton = document.getElementById('heroCtaButton');
+        if (heroCtaButton) {
+            heroCtaButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                smoothScroll('#contact-form', 800);
+            });
+        }
 
-    setInterval(atualizarCotacoes, 8000);
+        // --- Intersection Observer for Animations ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
 
-    // Intersection Observer for animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+        
+        // --- FORMULÁRIO WHATSAPP ---
+        const investmentOptions = document.querySelectorAll('.investment-option');
+        let selectedInvestment = '';
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
+        investmentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove a classe 'active' de todas as outras opções
+                investmentOptions.forEach(opt => opt.classList.remove('active'));
+                // Adiciona a classe 'active' na opção clicada
+                option.classList.add('active');
+                // Armazena o valor da opção selecionada
+                selectedInvestment = option.textContent.trim();
+            });
         });
-    }, observerOptions);
 
-    // Observe all sections and cards
-    document.querySelectorAll('.section, .card, .testimonial-card, .certificate-card, .step, .service-item').forEach(el => {
-        observer.observe(el);
+        const submitButton = document.getElementById('submitWhatsApp');
+        submitButton.addEventListener('click', () => {
+            const name = document.getElementById('formName').value.trim();
+            const phone = document.getElementById('formPhone').value.trim();
+            const henryNumber = '5511998928474'; // Seu número de WhatsApp
+
+            // Validação simples para garantir que os campos não estão vazios
+            if (!name || !phone || !selectedInvestment) {
+                alert('Por favor, preencha todos os campos e selecione uma faixa de investimento.');
+                return; // Para a execução se algum campo estiver faltando
+            }
+
+            // Monta a mensagem
+            let message = `Olá! Vim pelo site e gostaria de saber mais sobre a assessoria.\n\n`;
+            message += `*Nome:* ${name}\n`;
+            message += `*Telefone:* ${phone}\n`;
+            message += `*Carteira de Investimentos:* ${selectedInvestment}`;
+
+            // Codifica a mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+
+            // Cria o link do WhatsApp
+            const whatsappUrl = `https://wa.me/${henryNumber}?text=${encodedMessage}`;
+
+            // Abre o WhatsApp em uma nova aba
+            window.open(whatsappUrl, '_blank');
+        });
+
     });
-</script>
+    </script>
 </body>
 </html>
