@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="description" content="Henry Rondon - Assessor de Investimentos Certificado pela ANCORD, vinculado à MGM Investimentos e BTG Pactual. Planejamento financeiro estratégico para proteger e multiplicar seu patrimônio.">
-    <meta name="keywords" content="assessor de investimentos, planejamento financeiro, investimentos, BTG Pactual, MGM Investimentos, Henry Rondon">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description"
+        content="Henry Rondon - Assessor de Investimentos Certificado pela ANCORD, vinculado à MGM Investimentos e BTG Pactual. Planejamento financeiro estratégico para proteger e multiplicar seu patrimônio.">
+    <meta name="keywords"
+        content="assessor de investimentos, planejamento financeiro, investimentos, BTG Pactual, MGM Investimentos, Henry Rondon">
     <meta name="author" content="Henry Rondon">
     <title>Henry Rondon - Assessor de Investimentos</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
         :root {
-            --primary-dark: #0A0A0A;
-            --secondary-dark: #1A1A1A;
-            --accent-blue: #007BFF;
+            --primary-dark: #0d1016;
+            --secondary-dark: #07162e;
+            --accent-blue: #25a6e0;
             --text-light: #F0F0F0;
             --text-secondary: #A0A0A0;
             --white: #FFFFFF;
         }
 
-        html { scroll-behavior: auto !important; /* Disabled for JS smooth scroll */ }
+        html {
+            scroll-behavior: auto !important;
+            /* Disabled for JS smooth scroll */
+        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
             font-family: 'Roboto', 'Arial', sans-serif;
@@ -31,7 +43,7 @@
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
         }
-        
+
         /* --- Loading Page --- */
         .loading-page {
             position: fixed;
@@ -39,7 +51,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #061633;
+            background-color: var(--secondary-dark);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -53,268 +65,771 @@
             opacity: 0;
             pointer-events: none;
         }
-        
-        /* CORREÇÃO 1: Ajustado o CSS do logo para caber na tela do celular */
+
+        /* MODIFICADO: Imagem de loading em tela cheia */
         .loading-logo {
-            max-width: 80vw;
-            max-height: 80vh;
-            width: auto;
-            height: auto;
-            object-fit: contain; /* Garante que a imagem inteira apareça */
-            animation: pulseLogo 1.5s ease-in-out infinite;
+            width: 100%;
+            height: 30%;
+            object-fit: cover;
+            /* Garante que a imagem cubra toda a área */
+            animation: pulseLogo 2s ease-in-out infinite;
             background-color: transparent;
         }
-        @keyframes pulseLogo { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.03); opacity: 1; } }
+
+        @keyframes pulseLogo {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.03);
+                opacity: 1;
+            }
+        }
 
         /* --- Ticker Bar (Top) --- */
         #cotacoes-bar {
-            background: #000; color: var(--text-light); padding: 8px 0;
-            font-size: 14px; overflow: hidden; white-space: nowrap;
-            width: 100%; position: fixed; top: 0; left: 0; z-index: 1100;
+            background: var(--secondary-dark);
+            color: var(--text-light);
+            padding: 8px 0;
+            font-size: 14px;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1100;
         }
-        .cotacoes-scroll { display: inline-block; white-space: nowrap; padding-left: 100%; animation: scroll-left 40s linear infinite; }
-        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-        .cotacao-item { display: inline-flex; align-items: center; margin-right: 25px; }
-        .cotacao-nome { font-weight: 600; margin-right: 8px; color: var(--accent-blue); }
-        .cotacao-valor { font-weight: 700; }
-        .cotacao-alta { color: #10B981; } .cotacao-baixa { color: #EF4444; }
-        .cotacao-variacao { font-size: 12px; margin-left: 6px; }
-        .trending-up::after { content: '▲'; margin-left: 4px; color: #10B981; }
-        .trending-down::after { content: '▼'; margin-left: 4px; color: #EF4444; }
+
+        .cotacoes-scroll {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: scroll-left 40s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .cotacao-item {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 25px;
+        }
+
+        .cotacao-nome {
+            font-weight: 600;
+            margin-right: 8px;
+            color: var(--accent-blue);
+        }
+
+        .cotacao-valor {
+            font-weight: 700;
+        }
+
+        .cotacao-alta {
+            color: #10B981;
+        }
+
+        .cotacao-baixa {
+            color: #EF4444;
+        }
+
+        .cotacao-variacao {
+            font-size: 12px;
+            margin-left: 6px;
+        }
+
+        .trending-up::after {
+            content: '▲';
+            margin-left: 4px;
+            color: #10B981;
+        }
+
+        .trending-down::after {
+            content: '▼';
+            margin-left: 4px;
+            color: #EF4444;
+        }
 
         /* --- Header --- */
         header {
-            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            position: fixed; top: 37px; /* Height of ticker */ left: 0; right: 0;
-            z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(13, 16, 22, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: fixed;
+            top: 37px;
+            /* Height of ticker */
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .container { max-width: 1200px; margin-left: auto; margin-right: auto; padding: 0 15px; }
-        nav.container { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; }
-        .logo { font-size: 1.6rem; font-weight: 700; color: var(--text-light); cursor: pointer; }
-        .logo span { color: var(--accent-blue); }
-        .nav-menu { display: flex; list-style: none; gap: 2rem; }
+
+        .container {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 15px;
+        }
+
+        nav.container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--accent-blue);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
         .nav-menu a {
-            color: var(--text-secondary); text-decoration: none; transition: color 0.3s ease;
-            font-weight: 500; position: relative; padding: 0.5rem 0; font-size: 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            font-size: 1rem;
         }
-        .nav-menu a:hover { color: var(--text-light); }
+
+        .nav-menu a:hover {
+            color: var(--text-light);
+        }
+
         .nav-menu a::after {
-            content: ''; position: absolute; width: 0; height: 2px;
-            bottom: -5px; left: 0; background: var(--accent-blue);
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--accent-blue);
             transition: width 0.3s ease;
         }
-        .nav-menu a:hover::after { width: 100%; }
-        .header-cta {
-            color: var(--text-light); border: 1px solid var(--accent-blue); border-radius: 50px;
-            padding: 0.6rem 1.5rem; text-decoration: none; transition: all 0.3s ease;
+
+        .nav-menu a:hover::after {
+            width: 100%;
         }
-        .header-cta:hover { background-color: var(--accent-blue); color: var(--white); }
-        .mobile-menu-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.8rem; cursor: pointer; z-index: 2100; }
-        
+
+        .header-cta {
+            color: var(--text-light);
+            border: 1px solid var(--accent-blue);
+            border-radius: 50px;
+            padding: 0.6rem 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .header-cta:hover {
+            background-color: var(--accent-blue);
+            color: var(--white);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 2100;
+        }
+
         /* --- Full Screen Mobile Menu --- */
         .mobile-nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--primary-dark); z-index: 2000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden; transform: translateY(-20px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-dark);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
             transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
         }
-        .mobile-nav.active { opacity: 1; visibility: visible; transform: translateY(0); }
-        .mobile-nav ul { list-style: none; text-align: center; }
-        .mobile-nav li { margin: 1.5rem 0; }
-        .mobile-nav a { color: var(--text-light); text-decoration: none; font-size: 2rem; font-weight: 500; }
-        .mobile-menu-close { position: absolute; top: 2rem; right: 2rem; font-size: 2.5rem; color: var(--white); background: none; border: none; cursor: pointer; }
+
+        .mobile-nav.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-nav li {
+            margin: 1.5rem 0;
+        }
+
+        .mobile-nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2.5rem;
+            color: var(--white);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
 
         /* --- General Section Styling --- */
-        .section { padding: clamp(60px, 12vw, 80px) 0; width: 100%; }
-        .section h2 { font-size: clamp(2.2rem, 6vw, 3rem); text-align: center; margin-bottom: 1rem; font-weight: 700; }
-        .section h2 span { color: var(--accent-blue); }
-        .section-subtitle { text-align: center; font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: clamp(3rem, 8vw, 5rem); color: var(--text-secondary); max-width: 800px; margin-left:auto; margin-right:auto;}
+        .section {
+            padding: clamp(60px, 12vw, 80px) 0;
+            width: 100%;
+        }
+
+        .section h2 {
+            font-size: clamp(2.2rem, 6vw, 3rem);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section h2 span {
+            color: var(--accent-blue);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            margin-bottom: clamp(3rem, 8vw, 5rem);
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
         /* --- Hero Section --- */
-        .hero { 
-            min-height: 80vh; display: flex; align-items: center; 
-            padding-top: 180px; /* Increased padding */
+        .hero {
+            min-height: 100vh;
+            /* MODIFICADO: Hero em tela cheia */
+            display: flex;
+            width: 100%;
+            align-items: center;
+            padding-top: 100px;
+            /* Ajuste no padding para compensar a altura do header */
             padding-bottom: 80px;
-            text-align: center; 
-            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.7)), url('herohenry.png') no-repeat center center;
+            text-align: center;
+            background: linear-gradient(rgba(13, 16, 22, 0.7), rgba(13, 16, 22, 0.7)), url('herohenry.png') no-repeat center center;
             background-size: cover;
             background-attachment: fixed;
         }
-        .hero h1 { font-size: clamp(3rem, 8vw, 4.5rem); font-weight: 700; line-height: 1.2; }
-        .hero .subtitle { font-size: clamp(1.2rem, 4vw, 1.5rem); color: var(--text-secondary); max-width: 600px; margin: 1.5rem auto 2.5rem auto; }
-        .cta-button {
-            display: inline-block; background: var(--accent-blue); color: var(--white); padding: 1rem 2.5rem;
-            text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem;
-            transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3); border: none; cursor: pointer;
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.2;
         }
-        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4); }
+
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 1.5rem auto 2.5rem auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--accent-blue);
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(37, 166, 224, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 166, 224, 0.4);
+        }
 
         /* --- Two-Column Layout --- */
-        .two-col-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 5rem; }
-        .two-col-layout:last-child { margin-bottom: 0; }
-        .two-col-layout.image-right .col-image { order: 2; } /* Default desktop behavior */
-        .col-text h3 { font-size: 2rem; margin-bottom: 1rem; }
-        .col-text h4 { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 400; }
-        #about .col-image img { max-width: 350px; /* Reduced size */ margin: 0 auto; display: block;}
-        .col-image img { width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        
+        .two-col-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 5rem;
+        }
+
+        .two-col-layout:last-child {
+            margin-bottom: 0;
+        }
+
+        .two-col-layout.image-right .col-image {
+            order: 2;
+        }
+
+        .col-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .col-text h4 {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        #about .col-image img {
+            max-width: 350px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .col-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
         /* --- Jornada Section --- */
-        .journey-item { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: center; padding: 2rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; margin-bottom: 2rem; }
-        .journey-number { font-size: clamp(6rem, 20vw, 10rem); font-weight: 700; color: var(--accent-blue); line-height: 1; text-align: center; opacity: 0.5; }
-        .journey-text h3 { font-size: 1.8rem; color: var(--accent-blue); }
-        .journey-text h4 { font-size: 1.2rem; color: var(--text-light); margin-bottom: 1rem; }
+        .journey-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .journey-number {
+            font-size: clamp(6rem, 20vw, 10rem);
+            font-weight: 700;
+            color: var(--accent-blue);
+            line-height: 1;
+            text-align: center;
+            opacity: 0.5;
+        }
+
+        .journey-text h3 {
+            font-size: 1.8rem;
+            color: var(--accent-blue);
+        }
+
+        .journey-text h4 {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
 
         /* --- Legacy (Timeline) Section --- */
-        .legacy-timeline { 
-            display: flex; 
-            justify-content: space-between; 
-            position: relative; 
-            margin-top: 4rem; 
+        .legacy-timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 4rem;
         }
-        .legacy-timeline::before { 
-            content: ''; 
-            position: absolute; 
-            top: 30px; 
-            left: 10%; 
-            width: 80%; 
-            height: 2px; 
-            background-color: rgba(0, 123, 255, 0.3); 
-            z-index: 0; 
+
+        .legacy-timeline::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background-color: rgba(37, 166, 224, 0.3);
+            z-index: 0;
         }
-        .legacy-step { 
-            text-align: center; 
-            width: 20%; 
-            position: relative; 
-            z-index: 1; /* Garante que o ícone fique sobre a linha */
+
+        .legacy-step {
+            text-align: center;
+            width: 20%;
+            position: relative;
+            z-index: 1;
         }
-        .legacy-icon { 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 50%; 
-            background-color: var(--secondary-dark); 
-            border: 2px solid var(--accent-blue); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin: 0 auto 1rem auto; 
-            font-size: 1.8rem; 
-            color: var(--accent-blue); 
+
+        .legacy-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--secondary-dark);
+            border: 2px solid var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            font-size: 1.8rem;
+            color: var(--accent-blue);
         }
-        .legacy-step h4 { font-size: 1.1rem; }
+
+        .legacy-step h4 {
+            font-size: 1.1rem;
+        }
 
         /* --- Certifications Section --- */
-        .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .cert-card { background: var(--secondary-dark); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 2rem; text-align: center; }
-        .cert-header { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
-        .cert-title { font-size: 1.4rem; font-weight: 700; }
-        .cert-card img { max-width: 250px; width: 100%; height: auto; border-radius: 10px; margin-bottom: 1.5rem; }
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .cert-card {
+            background: var(--secondary-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .cert-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cert-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .cert-card img {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
 
         /* --- Contact Form Section --- */
-        .contact-form-section { background: var(--secondary-dark); border-radius: 20px; padding: 4rem 2rem; }
-        .contact-form-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        .form-fields { display: flex; flex-direction: column; gap: 1rem; }
-        .form-field, input.form-field { 
-            background: var(--primary-dark); border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 10px; padding: 1rem; color: var(--text-light); font-family: 'Roboto', sans-serif; font-size: 1rem;
+        .contact-form-section {
+            background: var(--secondary-dark);
+            border-radius: 20px;
+            padding: 4rem 2rem;
         }
-        input.form-field::placeholder { color: var(--text-secondary); }
-        input.form-field:focus { border-color: var(--accent-blue); outline: none; }
-        .form-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .investment-option { text-align: center; cursor: pointer; transition: background-color 0.3s, border-color 0.3s; }
-        .investment-option.active { background-color: rgba(0, 123, 255, 0.2); border-color: var(--accent-blue); }
+
+        .contact-form-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .form-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-field,
+        input.form-field {
+            background: var(--primary-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            color: var(--text-light);
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+        }
+
+        input.form-field::placeholder {
+            color: var(--text-secondary);
+        }
+
+        input.form-field:focus {
+            border-color: var(--accent-blue);
+            outline: none;
+        }
+
+        .form-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .investment-option {
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .investment-option.active {
+            background-color: rgba(37, 166, 224, 0.2);
+            border-color: var(--accent-blue);
+        }
 
         /* --- Map Section --- */
-        #location { padding-bottom: 0; }
-        #location iframe { width: 100%; height: 450px; border: 0; border-radius: 15px; }
+        #location {
+            padding-bottom: 0;
+        }
+
+        #location iframe {
+            width: 100%;
+            height: 450px;
+            border: 0;
+            border-radius: 15px;
+        }
 
         /* --- Saiba Mais Section --- */
-        .saiba-mais { background: var(--secondary-dark); padding: 4rem 0; text-align: center; }
-        .saiba-mais h3 { font-size: 2rem; margin-bottom: 1.5rem; }
+        .saiba-mais {
+            background: var(--secondary-dark);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .saiba-mais h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
 
         /* --- Utilities & Footer --- */
-        .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
-        .back-to-top, .whatsapp-float { position: fixed; right: 20px; border-radius: 50%; box-shadow: 0 6px 20px rgba(0,0,0,0.3); z-index: 999; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        .back-to-top { bottom: 20px; background: var(--accent-blue); color: var(--white); width: 50px; height: 50px; font-size: 1.8rem; text-decoration: none; opacity: 0; visibility: hidden; }
-        .back-to-top.show { opacity: 1; visibility: visible; }
-        .whatsapp-float { bottom: 80px; background-color: #25D366; width: 60px; height: 60px; }
-        .whatsapp-icon { width: 32px; height: 32px; fill: white; }
-        footer { background: #000; padding: 3rem 15px; text-align: center; }
-        .footer-socials { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
-        .social-icon { color: var(--text-secondary); text-decoration: none; font-size: 1.5rem; transition: color 0.3s; }
-        .social-icon:hover { color: var(--accent-blue); }
-        .footer-disclaimer { font-size: 0.75rem; color: var(--text-secondary); text-align: justify; margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; opacity: 0.7;}
-        .link_name { color: var(--accent-blue); text-decoration: none; }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top,
+        .whatsapp-float {
+            position: fixed;
+            right: 20px;
+            border-radius: 50%;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top {
+            bottom: 20px;
+            background: var(--accent-blue);
+            color: var(--white);
+            width: 60px;
+            height: 50px;
+            font-size: 1.8rem;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .whatsapp-float {
+            bottom: 80px;
+            background-color: #25D366;
+            width: 60px;
+            height: 60px;
+        }
+
+        .whatsapp-icon {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        footer {
+            background: #000;
+            padding: 3rem 15px;
+            text-align: center;
+        }
+
+        /* MODIFICADO: Footer em preto */
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icon {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icon:hover {
+            color: var(--accent-blue);
+        }
+
+        .footer-disclaimer {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: justify;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            opacity: 0.7;
+        }
+
+        .link_name {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
 
         /* --- Media Queries --- */
         @media (max-width: 992px) {
-            
-            /* CORREÇÃO 2: Faz a imagem de fundo do hero aparecer no mobile */
+
             .hero {
                 background-attachment: scroll;
             }
 
-            .two-col-layout, .journey-item, .contact-form-layout { grid-template-columns: 1fr; }
-            
-            .two-col-layout .col-text { order: 1; }
-            .two-col-layout .col-image { order: 2; margin-bottom: 2rem; }
-            .two-col-layout.image-right .col-image { order: 2; }
-
-            .journey-number { text-align: left; font-size: 6rem; }
-
-            .legacy-timeline { 
-                flex-direction: column; 
-                align-items: flex-start;
-                gap: 2rem; 
-                padding-left: 50px; /* Espaço para a linha e ícones */
+            .two-col-layout,
+            .journey-item,
+            .contact-form-layout {
+                grid-template-columns: 1fr;
             }
-            .legacy-timeline::before { 
+
+            .two-col-layout .col-text {
+                order: 1;
+            }
+
+            .two-col-layout .col-image {
+                order: 2;
+                margin-bottom: 2rem;
+            }
+
+            .two-col-layout.image-right .col-image {
+                order: 2;
+            }
+
+            .journey-number {
+                text-align: left;
+                font-size: 6rem;
+            }
+
+            .legacy-timeline {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2rem;
+                padding-left: 50px;
+            }
+
+            .legacy-timeline::before {
                 display: block;
-                left: 30px; 
+                left: 30px;
                 top: 0;
                 width: 2px;
                 height: 100%;
                 transform: translateX(-50%);
             }
+
             .legacy-step {
                 width: 100%;
                 text-align: left;
                 position: relative;
                 padding-left: 80px;
             }
+
             .legacy-icon {
-                margin: 0; 
+                margin: 0;
                 position: absolute;
                 left: 0;
                 top: 0;
                 transform: translateX(0);
             }
+
             .legacy-step h4 {
                 padding-top: 15px;
                 margin-left: -20px;
             }
         }
+
         @media (max-width: 768px) {
-            .nav-menu, .header-cta { display: none; }
-            .mobile-menu-toggle { display: block; }
+
+            .nav-menu,
+            .header-cta {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .form-options {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="loading-page" id="loadingPage">
         <img src="herohenry.png" alt="Logo" class="loading-logo">
     </div>
-    
+
     <div id="cotacoes-bar">
         <div class="cotacoes-scroll">
-            <span class="cotacao-item"><span class="cotacao-nome">IBOV</span><span class="cotacao-valor cotacao-alta">128,750</span><span class="cotacao-variacao trending-up">+1.45%</span></span>
-            <span class="cotacao-item"><span class="cotacao-nome">IFIX</span><span class="cotacao-valor cotacao-alta">3,489</span><span class="cotacao-variacao trending-up">+0.95%</span></span>
-            <span class="cotacao-item"><span class="cotacao-nome">S&P 500</span><span class="cotacao-valor cotacao-alta">4,612</span><span class="cotacao-variacao trending-up">+1.02%</span></span>
-            <span class="cotacao-item"><span class="cotacao-nome">NASDAQ</span><span class="cotacao-valor cotacao-baixa">14,189</span><span class="cotacao-variacao trending-down">-0.45%</span></span>
-            <span class="cotacao-item"><span class="cotacao-nome">USD/BRL</span><span class="cotacao-valor cotacao-baixa">5.21</span><span class="cotacao-variacao trending-down">-0.82%</span></span>
-            <span class="cotacao-item"><span class="cotacao-nome">BITCOIN</span><span class="cotacao-valor cotacao-alta">$68,450</span><span class="cotacao-variacao trending-up">+2.67%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">IBOV</span><span
+                    class="cotacao-valor cotacao-alta">128,750</span><span
+                    class="cotacao-variacao trending-up">+1.45%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">IFIX</span><span
+                    class="cotacao-valor cotacao-alta">3,489</span><span
+                    class="cotacao-variacao trending-up">+0.95%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">S&P 500</span><span
+                    class="cotacao-valor cotacao-alta">4,612</span><span
+                    class="cotacao-variacao trending-up">+1.02%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">NASDAQ</span><span
+                    class="cotacao-valor cotacao-baixa">14,189</span><span
+                    class="cotacao-variacao trending-down">-0.45%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">USD/BRL</span><span
+                    class="cotacao-valor cotacao-baixa">5.21</span><span
+                    class="cotacao-variacao trending-down">-0.82%</span></span>
+            <span class="cotacao-item"><span class="cotacao-nome">BITCOIN</span><span
+                    class="cotacao-valor cotacao-alta">$68,450</span><span
+                    class="cotacao-variacao trending-up">+2.67%</span></span>
         </div>
     </div>
 
@@ -350,8 +865,10 @@
             <div class="container">
                 <div class="hero-content">
                     <h1 class="animate-on-scroll">Assessoria de Investimentos <span>para o seu futuro.</span></h1>
-                    <p class="subtitle animate-on-scroll" style="transition-delay: 0.2s;">Estratégias inteligentes, atendimento personalizado e o foco nos seus objetivos.</p>
-                    <button id="heroCtaButton" class="cta-button animate-on-scroll" style="transition-delay: 0.4s;">Converse comigo</button>
+                    <p class="subtitle animate-on-scroll" style="transition-delay: 0.2s;">Estratégias inteligentes,
+                        atendimento personalizado e o foco nos seus objetivos.</p>
+                    <button id="heroCtaButton" class="cta-button animate-on-scroll"
+                        style="transition-delay: 0.4s;">Converse comigo</button>
                 </div>
             </div>
         </section>
@@ -364,17 +881,22 @@
                     </div>
                     <div class="col-text animate-on-scroll" style="transition-delay: 0.2s;">
                         <h3>Henry Rondon & MGM Investimentos | BTG Pactual</h3>
-                        <p>Meu trabalho é oferecer uma assessoria de investimentos diferenciada, em total alinhamento com a filosofia da MGM Investimentos. Nascida em 2015, a MGM se destaca pelo profundo conhecimento e compromisso com a excelência.</p>
-                        <p>Como parte deste time e com o suporte do BTG Pactual, meu foco é proporcionar uma gestão patrimonial personalizada e integrada, desenvolvendo estratégias que vão além do tradicional, com base na confiança e transparência.</p>
+                        <p>Meu trabalho é oferecer uma assessoria de investimentos diferenciada, em total alinhamento
+                            com a filosofia da MGM Investimentos. Nascida em 2015, a MGM se destaca pelo profundo
+                            conhecimento e compromisso com a excelência.</p>
+                        <p>Como parte deste time e com o suporte do BTG Pactual, meu foco é proporcionar uma gestão
+                            patrimonial personalizada e integrada, desenvolvendo estratégias que vão além do
+                            tradicional, com base na confiança e transparência.</p>
                     </div>
                 </div>
             </div>
         </section>
-        
+
         <section id="certifications" class="section">
             <div class="container">
                 <h2 class="animate-on-scroll">Minhas <span>Certificações</span></h2>
-                <p class="section-subtitle animate-on-scroll">Credenciais que asseguram conhecimento técnico e compromisso ético com seus investimentos.</p>
+                <p class="section-subtitle animate-on-scroll">Credenciais que asseguram conhecimento técnico e
+                    compromisso ético com seus investimentos.</p>
                 <div class="certs-grid">
                     <div class="cert-card animate-on-scroll">
                         <div class="cert-header">
@@ -384,7 +906,8 @@
                             </div>
                         </div>
                         <img src="ancord.png" alt="Selo ANCORD">
-                        <p>Certificação essencial para assessores de investimento, garantindo expertise em mercados financeiros e conformidade regulatória.</p>
+                        <p>Certificação essencial para assessores de investimento, garantindo expertise em mercados
+                            financeiros e conformidade regulatória.</p>
                     </div>
                     <div class="cert-card animate-on-scroll" style="transition-delay: 0.2s;">
                         <div class="cert-header">
@@ -394,7 +917,8 @@
                             </div>
                         </div>
                         <img src="torornto.png" alt="Diploma Toronto School of Management">
-                        <p>Formação internacional em administração, com foco em mercados globais e gestão patrimonial estratégica.</p>
+                        <p>Formação internacional em administração, com foco em mercados globais e gestão patrimonial
+                            estratégica.</p>
                     </div>
                 </div>
             </div>
@@ -402,14 +926,18 @@
 
         <section id="solutions" class="section">
             <div class="container">
-                <h2 class="animate-on-scroll">Conte com especialistas em cada uma das <span>Soluções Financeiras</span></h2>
-                <p class="section-subtitle animate-on-scroll">Acesso a um ecossistema completo para diversificar e potencializar seu patrimônio de forma inteligente.</p>
+                <h2 class="animate-on-scroll">Conte com especialistas em cada uma das <span>Soluções Financeiras</span>
+                </h2>
+                <p class="section-subtitle animate-on-scroll">Acesso a um ecossistema completo para diversificar e
+                    potencializar seu patrimônio de forma inteligente.</p>
 
                 <div class="two-col-layout">
                     <div class="col-text animate-on-scroll">
                         <h3>Mesa de Renda Variável</h3>
                         <h4>Exclusividade, estratégia e especialistas à sua disposição.</h4>
-                        <p>Nossa mesa dedica atenção exclusiva ao acompanhamento do mercado de ações, oferecendo sugestões personalizadas, operações estruturadas e acesso a oportunidades que vão além do básico.</p>
+                        <p>Nossa mesa dedica atenção exclusiva ao acompanhamento do mercado de ações, oferecendo
+                            sugestões personalizadas, operações estruturadas e acesso a oportunidades que vão além do
+                            básico.</p>
                     </div>
                     <div class="col-image animate-on-scroll"><img src="mesa.webp" alt="Mesa de Renda Variável"></div>
                 </div>
@@ -418,25 +946,31 @@
                     <div class="col-text animate-on-scroll">
                         <h3>Investimentos OffShore</h3>
                         <h4>Conquiste o mundo com inteligência.</h4>
-                        <p>Acesse os mercados mais maduros e sólidos do planeta com segurança e estratégia. Diversifique seu patrimônio globalmente.</p>
+                        <p>Acesse os mercados mais maduros e sólidos do planeta com segurança e estratégia. Diversifique
+                            seu patrimônio globalmente.</p>
                     </div>
-                    <div class="col-image animate-on-scroll"><img src="offshore.webp" alt="Investimentos OffShore"></div>
+                    <div class="col-image animate-on-scroll"><img src="offshore.webp" alt="Investimentos OffShore">
+                    </div>
                 </div>
 
                 <div class="two-col-layout">
                     <div class="col-text animate-on-scroll">
                         <h3>Investimentos Alternativos</h3>
                         <h4>Diversificação real com ativos fora do convencional.</h4>
-                        <p>Explore oportunidades em Private Equity, Criptoativos, Fundos Exclusivos, FIDCs e Real Estate. Alternativos para quem busca multiplicar o patrimônio com inteligência.</p>
+                        <p>Explore oportunidades em Private Equity, Criptoativos, Fundos Exclusivos, FIDCs e Real
+                            Estate. Alternativos para quem busca multiplicar o patrimônio com inteligência.</p>
                     </div>
-                    <div class="col-image animate-on-scroll"><img src="alternativos.webp" alt="Investimentos Alternativos"></div>
+                    <div class="col-image animate-on-scroll"><img src="alternativos.webp"
+                            alt="Investimentos Alternativos"></div>
                 </div>
 
                 <div class="two-col-layout image-right">
                     <div class="col-text animate-on-scroll">
                         <h3>Mesa de Renda Fixa</h3>
                         <h4>Os melhores títulos do mercado para potencializar sua carteira.</h4>
-                        <p>Conte com um time que monitora diariamente as oportunidades em títulos públicos, debêntures, CRIs, CRAs, títulos bancários entre outros. Segurança e rentabilidade real com curadoria profissional.</p>
+                        <p>Conte com um time que monitora diariamente as oportunidades em títulos públicos, debêntures,
+                            CRIs, CRAs, títulos bancários entre outros. Segurança e rentabilidade real com curadoria
+                            profissional.</p>
                     </div>
                     <div class="col-image animate-on-scroll"><img src="fixa.webp" alt="Mesa de Renda Fixa"></div>
                 </div>
@@ -445,7 +979,9 @@
                     <div class="col-text animate-on-scroll">
                         <h3>MGM Corporate</h3>
                         <h4>Soluções financeiras sob medida para sua empresa.</h4>
-                        <p>Oferecemos assessoria especializada em investimentos para o caixa corporativo, operações compromissadas, estruturação de Hedge, estratégias patrimoniais para sócios e muito mais.</p>
+                        <p>Oferecemos assessoria especializada em investimentos para o caixa corporativo, operações
+                            compromissadas, estruturação de Hedge, estratégias patrimoniais para sócios e muito mais.
+                        </p>
                     </div>
                     <div class="col-image animate-on-scroll"><img src="mesa.webp" alt="MGM Corporate"></div>
                 </div>
@@ -455,34 +991,43 @@
         <section id="journey" class="section">
             <div class="container">
                 <h2 class="animate-on-scroll">Conheça a <span>Jornada do Cliente</span></h2>
-                <p class="section-subtitle animate-on-scroll">Um processo dinâmico e estruturado para garantir que suas decisões financeiras estejam sempre alinhadas à sua vida.</p>
-                
+                <p class="section-subtitle animate-on-scroll">Um processo dinâmico e estruturado para garantir que suas
+                    decisões financeiras estejam sempre alinhadas à sua vida.</p>
+
                 <div class="journey-item animate-on-scroll">
                     <div class="journey-number">01</div>
                     <div class="journey-text">
-                        <h3>Financial Planning</h3><h4>O ponto de partida estratégico</h4>
-                        <p>Antes de qualquer investimento, entendemos você. Analisamos sua carteira atual, identificamos seus objetivos e definimos seu perfil de investidor.</p>
+                        <h3>Financial Planning</h3>
+                        <h4>O ponto de partida estratégico</h4>
+                        <p>Antes de qualquer investimento, entendemos você. Analisamos sua carteira atual, identificamos
+                            seus objetivos e definimos seu perfil de investidor.</p>
                     </div>
                 </div>
                 <div class="journey-item animate-on-scroll">
                     <div class="journey-number">02</div>
                     <div class="journey-text">
-                        <h3>Diagnóstico Financeiro</h3><h4>Seu mapa patrimonial</h4>
-                        <p>Construímos um retrato completo da sua vida financeira, identificando oportunidades, riscos e pontos de atenção que orientarão todas as próximas decisões.</p>
+                        <h3>Diagnóstico Financeiro</h3>
+                        <h4>Seu mapa patrimonial</h4>
+                        <p>Construímos um retrato completo da sua vida financeira, identificando oportunidades, riscos e
+                            pontos de atenção que orientarão todas as próximas decisões.</p>
                     </div>
                 </div>
                 <div class="journey-item animate-on-scroll">
                     <div class="journey-number">03</div>
                     <div class="journey-text">
-                        <h3>Apresentação e Implementação</h3><h4>Do plano à ação</h4>
-                        <p>Apresentamos seu projeto financeiro completo: uma carteira de investimentos robusta, estratégica e alinhada ao seu perfil e objetivos.</p>
+                        <h3>Apresentação e Implementação</h3>
+                        <h4>Do plano à ação</h4>
+                        <p>Apresentamos seu projeto financeiro completo: uma carteira de investimentos robusta,
+                            estratégica e alinhada ao seu perfil e objetivos.</p>
                     </div>
                 </div>
                 <div class="journey-item animate-on-scroll">
                     <div class="journey-number">04</div>
                     <div class="journey-text">
-                        <h3>Acompanhamento e Revisão Estratégica</h3><h4>Evolução constante</h4>
-                        <p>Realizamos o monitoramento contínuo dos seus resultados, com revisões periódicas para ajustar estratégias, responder ao mercado e acompanhar as mudanças da sua vida.</p>
+                        <h3>Acompanhamento e Revisão Estratégica</h3>
+                        <h4>Evolução constante</h4>
+                        <p>Realizamos o monitoramento contínuo dos seus resultados, com revisões periódicas para ajustar
+                            estratégias, responder ao mercado e acompanhar as mudanças da sua vida.</p>
                     </div>
                 </div>
             </div>
@@ -491,19 +1036,24 @@
         <section id="legacy" class="section">
             <div class="container">
                 <h2 class="animate-on-scroll">Decisões que <span>atravessam gerações</span></h2>
-                <p class="section-subtitle animate-on-scroll">Um planejamento financeiro que pensa não apenas no hoje, mas no futuro que você está construindo.</p>
+                <p class="section-subtitle animate-on-scroll">Um planejamento financeiro que pensa não apenas no hoje,
+                    mas no futuro que você está construindo.</p>
                 <div class="legacy-timeline">
                     <div class="legacy-step animate-on-scroll" style="transition-delay: 0s;">
-                        <div class="legacy-icon">1</div><h4>Começo da jornada</h4>
+                        <div class="legacy-icon">1</div>
+                        <h4>Começo da jornada</h4>
                     </div>
                     <div class="legacy-step animate-on-scroll" style="transition-delay: 0.2s;">
-                        <div class="legacy-icon">2</div><h4>Acúmulo e proteção</h4>
+                        <div class="legacy-icon">2</div>
+                        <h4>Acúmulo e proteção</h4>
                     </div>
                     <div class="legacy-step animate-on-scroll" style="transition-delay: 0.4s;">
-                        <div class="legacy-icon">3</div><h4>Expansão patrimonial</h4>
+                        <div class="legacy-icon">3</div>
+                        <h4>Expansão patrimonial</h4>
                     </div>
                     <div class="legacy-step animate-on-scroll" style="transition-delay: 0.6s;">
-                        <div class="legacy-icon">4</div><h4>Transição e legado</h4>
+                        <div class="legacy-icon">4</div>
+                        <h4>Transição e legado</h4>
                     </div>
                 </div>
             </div>
@@ -515,12 +1065,15 @@
                     <div class="contact-form-layout">
                         <div class="col-text">
                             <h2>Quer entender como seus investimentos podem <span>render mais?</span></h2>
-                            <p class="section-subtitle" style="text-align: left; margin: 1rem 0 0 0;">Preencha o formulário e descubra novas oportunidades para o seu patrimônio.</p>
+                            <p class="section-subtitle" style="text-align: left; margin: 1rem 0 0 0;">Preencha o
+                                formulário e descubra novas oportunidades para o seu patrimônio.</p>
                         </div>
                         <div class="col-form">
-                            <div class="form-fields">
-                                <input type="text" id="formName" class="form-field" placeholder="Nome completo">
-                                <input type="tel" id="formPhone" class="form-field" placeholder="Telefone / WhatsApp">
+                            <form class="form-fields">
+                                <input type="text" id="formName" class="form-field" placeholder="Nome completo"
+                                    required>
+                                <input type="tel" id="formPhone" class="form-field" placeholder="Telefone / WhatsApp"
+                                    required>
                                 <p style="margin-top: 1rem;">Sua carteira de investimentos:</p>
                                 <div class="form-options">
                                     <div class="form-field investment-option">R$ 0 - R$ 100 mil</div>
@@ -528,8 +1081,9 @@
                                     <div class="form-field investment-option">R$ 300 mil - R$ 1 milhão</div>
                                     <div class="form-field investment-option">Acima de R$ 1 milhão</div>
                                 </div>
-                                <button id="submitWhatsApp" class="cta-button" style="margin-top: 1.5rem; text-align: center;">Converse comigo</button>
-                            </div>
+                                <button type="button" id="submitWhatsApp" class="cta-button"
+                                    style="margin-top: 1.5rem; text-align: center;">Converse comigo</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -540,7 +1094,9 @@
             <div class="container">
                 <h2 class="animate-on-scroll">Onde nos <span>encontrar</span></h2>
                 <div class="animate-on-scroll" style="margin-top: 2rem;">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14633.559627247105!2d-46.18037661693474!3d-23.51847470726442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cdd8375668af17%3A0x357616331a8c7f2c!2sR.%20Vit%C3%B3rio%20Part%C3%AAnio%2C%20142%20-%20Socorro%2C%20Mogi%20das%20Cruzes%20-%20SP%2C%2008780-410!5e0!3m2!1spt-BR!2sbr!4v1759511540495!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14633.559627247105!2d-46.18037661693474!3d-23.51847470726442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cdd8375668af17%3A0x357616331a8c7f2c!2sR.%20Vit%C3%B3rio%20Part%C3%AAnio%2C%20142%20-%20Socorro%2C%20Mogi%20das%20Cruzes%20-%20SP%2C%2008780-410!5e0!3m2!1spt-BR!2sbr!4v1759511540495!5m2!1spt-BR!2sbr"
+                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </section>
@@ -548,7 +1104,9 @@
         <section class="saiba-mais">
             <div class="container">
                 <h3 class="animate-on-scroll">Conheça mais sobre a estrutura que me apoia.</h3>
-                <a href="https://mgminvestimentos.com.br/#inicio" target="_blank" rel="noopener noreferrer" class="cta-button animate-on-scroll" style="transition-delay: 0.2s; background: var(--secondary-dark); border: 1px solid var(--accent-blue);">
+                <a href="https://mgminvestimentos.com.br/#inicio" target="_blank" rel="noopener noreferrer"
+                    class="cta-button animate-on-scroll"
+                    style="transition-delay: 0.2s; background: var(--secondary-dark); border: 1px solid var(--accent-blue);">
                     Visite o site da MGM Investimentos
                 </a>
             </div>
@@ -556,146 +1114,171 @@
     </main>
 
     <a href="#home" class="back-to-top" id="backToTop">↑</a>
-    <a href="https://wa.me/5511998928474?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="Fale conosco pelo WhatsApp">
-        <svg viewBox="0 0 24 24" class="whatsapp-icon"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.33 3.48 16.78L2 22L7.43 20.48C8.84 21.28 10.41 21.74 12.04 21.74C17.5 21.74 21.95 17.29 21.95 11.83C21.95 6.37 17.5 2 12.04 2ZM12.04 20.12C10.59 20.12 9.18 19.68 7.99 18.9L7.6 18.68L4.31 19.58L5.23 16.39L4.99 16.03C4.16 14.71 3.75 13.21 3.75 11.83C3.75 7.32 7.49 3.58 12.04 3.58C16.59 3.58 20.33 7.32 20.33 11.83C20.33 16.34 16.59 20.12 12.04 20.12ZM17.43 14.22C17.16 14.08 16.05 13.54 15.82 13.45C15.59 13.36 15.42 13.31 15.26 13.57C15.1 13.84 14.56 14.52 14.43 14.68C14.29 14.85 14.16 14.88 13.9 14.75C13.63 14.61 12.89 14.36 12.01 13.59C11.31 13.02 10.82 12.33 10.66 12.06C10.5 11.79 10.62 11.66 10.74 11.53C10.85 11.41 10.99 11.23 11.12 11.08C11.25 10.93 11.29 10.83 11.39 10.63C11.48 10.43 11.44 10.26 11.35 10.13C11.27 10 10.73 8.61 10.5 8.05C10.27 7.5 10.03 7.55 9.89 7.55C9.75 7.55 9.58 7.55 9.42 7.55C9.26 7.55 8.99 7.64 8.76 7.89C8.54 8.15 7.99 8.65 7.99 9.82C7.99 11 8.79 12.11 8.92 12.27C9.05 12.44 10.43 14.65 12.63 15.54C13.23 15.79 13.68 15.93 14.02 16.03C14.53 16.18 15.02 16.13 15.41 16.03C15.84 15.92 16.82 15.35 17.05 14.78C17.28 14.22 17.28 13.76 17.2 13.63C17.12 13.5 16.96 13.43 16.69 13.3Z"/></svg>
+    <a href="https://wa.me/5511998928474?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais."
+        class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="Fale conosco pelo WhatsApp">
+        <svg viewBox="0 0 24 24" class="whatsapp-icon">
+            <path
+                d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.33 3.48 16.78L2 22L7.43 20.48C8.84 21.28 10.41 21.74 12.04 21.74C17.5 21.74 21.95 17.29 21.95 11.83C21.95 6.37 17.5 2 12.04 2ZM12.04 20.12C10.59 20.12 9.18 19.68 7.99 18.9L7.6 18.68L4.31 19.58L5.23 16.39L4.99 16.03C4.16 14.71 3.75 13.21 3.75 11.83C3.75 7.32 7.49 3.58 12.04 3.58C16.59 3.58 20.33 7.32 20.33 11.83C20.33 16.34 16.59 20.12 12.04 20.12ZM17.43 14.22C17.16 14.08 16.05 13.54 15.82 13.45C15.59 13.36 15.42 13.31 15.26 13.57C15.1 13.84 14.56 14.52 14.43 14.68C14.29 14.85 14.16 14.88 13.9 14.75C13.63 14.61 12.89 14.36 12.01 13.59C11.31 13.02 10.82 12.33 10.66 12.06C10.5 11.79 10.62 11.66 10.74 11.53C10.85 11.41 10.99 11.23 11.12 11.08C11.25 10.93 11.29 10.83 11.39 10.63C11.48 10.43 11.44 10.26 11.35 10.13C11.27 10 10.73 8.61 10.5 8.05C10.27 7.5 10.03 7.55 9.89 7.55C9.75 7.55 9.58 7.55 9.42 7.55C9.26 7.55 8.99 7.64 8.76 7.89C8.54 8.15 7.99 8.65 7.99 9.82C7.99 11 8.79 12.11 8.92 12.27C9.05 12.44 10.43 14.65 12.63 15.54C13.23 15.79 13.68 15.93 14.02 16.03C14.53 16.18 15.02 16.13 15.41 16.03C15.84 15.92 16.82 15.35 17.05 14.78C17.28 14.22 17.28 13.76 17.2 13.63C17.12 13.5 16.96 13.43 16.69 13.3Z" />
+        </svg>
     </a>
 
     <footer id="contact">
         <div class="container">
             <div class="footer-socials">
-                <a href="https://wa.me/5511998928474?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." target="_blank" class="social-icon" title="WhatsApp">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.33 3.48 16.78L2 22L7.43 20.48C8.84 21.28 10.41 21.74 12.04 21.74C17.5 21.74 21.95 17.29 21.95 11.83C21.95 6.37 17.5 2 12.04 2ZM12.04 20.12C10.59 20.12 9.18 19.68 7.99 18.9L7.6 18.68L4.31 19.58L5.23 16.39L4.99 16.03C4.16 14.71 3.75 13.21 3.75 11.83C3.75 7.32 7.49 3.58 12.04 3.58C16.59 3.58 20.33 7.32 20.33 11.83C20.33 16.34 16.59 20.12 12.04 20.12ZM17.43 14.22C17.16 14.08 16.05 13.54 15.82 13.45C15.59 13.36 15.42 13.31 15.26 13.57C15.1 13.84 14.56 14.52 14.43 14.68C14.29 14.85 14.16 14.88 13.9 14.75C13.63 14.61 12.89 14.36 12.01 13.59C11.31 13.02 10.82 12.33 10.66 12.06C10.5 11.79 10.62 11.66 10.74 11.53C10.85 11.41 10.99 11.23 11.12 11.08C11.25 10.93 11.29 10.83 11.39 10.63C11.48 10.43 11.44 10.26 11.35 10.13C11.27 10 10.73 8.61 10.5 8.05C10.27 7.5 10.03 7.55 9.89 7.55C9.75 7.55 9.58 7.55 9.42 7.55C9.26 7.55 8.99 7.64 8.76 7.89C8.54 8.15 7.99 8.65 7.99 9.82C7.99 11 8.79 12.11 8.92 12.27C9.05 12.44 10.43 14.65 12.63 15.54C13.23 15.79 13.68 15.93 14.02 16.03C14.53 16.18 15.02 16.13 15.41 16.03C15.84 15.92 16.82 15.35 17.05 14.78C17.28 14.22 17.28 13.76 17.2 13.63C17.12 13.5 16.96 13.43 16.69 13.3Z"/>
+                <a href="https://wa.me/5511998928474?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais."
+                    target="_blank" class="social-icon" title="WhatsApp">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.33 3.48 16.78L2 22L7.43 20.48C8.84 21.28 10.41 21.74 12.04 21.74C17.5 21.74 21.95 17.29 21.95 11.83C21.95 6.37 17.5 2 12.04 2ZM12.04 20.12C10.59 20.12 9.18 19.68 7.99 18.9L7.6 18.68L4.31 19.58L5.23 16.39L4.99 16.03C4.16 14.71 3.75 13.21 3.75 11.83C3.75 7.32 7.49 3.58 12.04 3.58C16.59 3.58 20.33 7.32 20.33 11.83C20.33 16.34 16.59 20.12 12.04 20.12ZM17.43 14.22C17.16 14.08 16.05 13.54 15.82 13.45C15.59 13.36 15.42 13.31 15.26 13.57C15.1 13.84 14.56 14.52 14.43 14.68C14.29 14.85 14.16 14.88 13.9 14.75C13.63 14.61 12.89 14.36 12.01 13.59C11.31 13.02 10.82 12.33 10.66 12.06C10.5 11.79 10.62 11.66 10.74 11.53C10.85 11.41 10.99 11.23 11.12 11.08C11.25 10.93 11.29 10.83 11.39 10.63C11.48 10.43 11.44 10.26 11.35 10.13C11.27 10 10.73 8.61 10.5 8.05C10.27 7.5 10.03 7.55 9.89 7.55C9.75 7.55 9.58 7.55 9.42 7.55C9.26 7.55 8.99 7.64 8.76 7.89C8.54 8.15 7.99 8.65 7.99 9.82C7.99 11 8.79 12.11 8.92 12.27C9.05 12.44 10.43 14.65 12.63 15.54C13.23 15.79 13.68 15.93 14.02 16.03C14.53 16.18 15.02 16.13 15.41 16.03C15.84 15.92 16.82 15.35 17.05 14.78C17.28 14.22 17.28 13.76 17.2 13.63C17.12 13.5 16.96 13.43 16.69 13.3Z" />
                     </svg>
                 </a>
-                <a href="https://www.linkedin.com/in/henry-rondon-b73b15297/" target="_blank" class="social-icon" title="LinkedIn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9A1.55 1.55 0 0 0 3.55 22h16.9a1.55 1.55 0 0 0 1.55-1.55V3.55A1.55 1.55 0 0 0 20.45 2ZM8.09 18.74H5.09V9.75h3v8.99ZM6.59 8.44a1.88 1.88 0 1 1 0-3.76 1.88 1.88 0 0 1 0 3.76Zm12.15 10.3h-3v-4.43c0-1.06-.02-2.42-1.48-2.42-1.48 0-1.71 1.15-1.71 2.34v4.51H9.55V9.75h2.88v1.32h.04c.4-.76 1.38-1.55 2.84-1.55 3.04 0 3.6 2 3.6 4.6v5.33Z"/></svg>
+                <a href="https://www.linkedin.com/in/henry-rondon-b73b15297/" target="_blank" class="social-icon"
+                    title="LinkedIn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9A1.55 1.55 0 0 0 3.55 22h16.9a1.55 1.55 0 0 0 1.55-1.55V3.55A1.55 1.55 0 0 0 20.45 2ZM8.09 18.74H5.09V9.75h3v8.99ZM6.59 8.44a1.88 1.88 0 1 1 0-3.76 1.88 1.88 0 0 1 0 3.76Zm12.15 10.3h-3v-4.43c0-1.06-.02-2.42-1.48-2.42-1.48 0-1.71 1.15-1.71 2.34v4.51H9.55V9.75h2.88v1.32h.04c.4-.76 1.38-1.55 2.84-1.55 3.04 0 3.6 2 3.6 4.6v5.33Z" />
+                    </svg>
                 </a>
             </div>
             <p>MGM Invest © Todos os direitos reservados</p>
-            <a class="link_name" href="https://wa.me/5511960573657?text=Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os" target="_blank" rel="noopener noreferrer">Desenvolvido por Lucas Cabral</a>
+            <a class="link_name"
+                href="https://wa.me/5511960573657?text=Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os"
+                target="_blank" rel="noopener noreferrer">Desenvolvido por Lucas Cabral</a>
             <div class="footer-disclaimer">
                 <p><strong>OUVIDORIA BTG PACTUAL:</strong> 0800-722-0048 | ouvidoria@btgpactual.com</p>
-                <p>MGM Investimentos, CNPJ nº 23.123.647/0001-06 é uma empresa de assessoria de investimento devidamente registrada na CVM (Resolução CVM 178), atuando como preposto do Banco BTG Pactual S/A. O assessor de investimento não pode administrar ou gerir o patrimônio de investidores. O investimento em ações é um investimento de risco e rentabilidade passada não é garantia de rentabilidade futura. Para reclamações, contatar a Ouvidoria do Banco BTG Pactual S/A.</p>
+                <p>MGM Investimentos, CNPJ nº 23.123.647/0001-06 é uma empresa de assessoria de investimento devidamente
+                    registrada na CVM (Resolução CVM 178), atuando como preposto do Banco BTG Pactual S/A. O assessor de
+                    investimento não pode administrar ou gerir o patrimônio de investidores. O investimento em ações é
+                    um investimento de risco e rentabilidade passada não é garantia de rentabilidade futura. Para
+                    reclamações, contatar a Ouvidoria do Banco BTG Pactual S/A.</p>
             </div>
         </div>
     </footer>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- Loading Page ---
-        const loadingPage = document.getElementById('loadingPage');
-        window.addEventListener('load', () => {
-            setTimeout(() => { loadingPage.classList.add('hidden'); }, 500);
-        });
-
-        // --- Mobile Menu ---
-        const toggleBtn = document.getElementById('mobileMenuToggle');
-        const closeBtn = document.getElementById('mobileMenuClose');
-        const mobileNav = document.getElementById('mobileNav');
-        const mobileNavLinks = mobileNav.querySelectorAll('a');
-        const openMenu = () => mobileNav.classList.add('active');
-        const closeMenu = () => mobileNav.classList.remove('active');
-        toggleBtn.addEventListener('click', openMenu);
-        closeBtn.addEventListener('click', closeMenu);
-        mobileNavLinks.forEach(link => link.addEventListener('click', closeMenu));
-
-        // --- Back to Top Button ---
-        const backToTop = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) backToTop.classList.add('show');
-            else backToTop.classList.remove('show');
-        });
-
-        // --- JS Smooth Scroll ---
-        function smoothScroll(target, duration) {
-            const targetElement = document.querySelector(target);
-            if (!targetElement) return;
-            const headerOffset = 100; // Offset for fixed header height
-            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-            const startPosition = window.pageYOffset;
-            const distance = targetPosition - startPosition;
-            let startTime = null;
-
-            function animation(currentTime) {
-                if (startTime === null) startTime = currentTime;
-                const timeElapsed = currentTime - startTime;
-                const run = ease(timeElapsed, startPosition, distance, duration);
-                window.scrollTo(0, run);
-                if (timeElapsed < duration) requestAnimationFrame(animation);
-            }
-            function ease(t, b, c, d) {
-                t /= d / 2;
-                if (t < 1) return c / 2 * t * t + b;
-                t--;
-                return -c / 2 * (t * (t - 2) - 1) + b;
-            }
-            requestAnimationFrame(animation);
-        }
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                smoothScroll(targetId, 800);
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Loading Page ---
+            const loadingPage = document.getElementById('loadingPage');
+            window.addEventListener('load', () => {
+                setTimeout(() => { loadingPage.classList.add('hidden'); }, 500);
             });
-        });
-        
-        // --- Botão Hero CTA Scroll ---
-        const heroCtaButton = document.getElementById('heroCtaButton');
-        if (heroCtaButton) {
-            heroCtaButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                smoothScroll('#contact-form', 800);
-            });
-        }
 
-        // --- Intersection Observer for Animations ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+            // --- Mobile Menu ---
+            const toggleBtn = document.getElementById('mobileMenuToggle');
+            const closeBtn = document.getElementById('mobileMenuClose');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileNavLinks = mobileNav.querySelectorAll('a');
+            const openMenu = () => mobileNav.classList.add('active');
+            const closeMenu = () => mobileNav.classList.remove('active');
+            toggleBtn.addEventListener('click', openMenu);
+            closeBtn.addEventListener('click', closeMenu);
+            mobileNavLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+            // --- Back to Top Button ---
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) backToTop.classList.add('show');
+                else backToTop.classList.remove('show');
+            });
+
+            // --- JS Smooth Scroll ---
+            function smoothScroll(target, duration) {
+                const targetElement = document.querySelector(target);
+                if (!targetElement) return;
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const tickerHeight = document.getElementById('cotacoes-bar').offsetHeight;
+                const totalOffset = headerHeight + tickerHeight;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - totalOffset;
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                let startTime = null;
+
+                function animation(currentTime) {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const run = ease(timeElapsed, startPosition, distance, duration);
+                    window.scrollTo(0, run);
+                    if (timeElapsed < duration) requestAnimationFrame(animation);
                 }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-        
-        // --- FORMULÁRIO WHATSAPP ---
-        const investmentOptions = document.querySelectorAll('.investment-option');
-        let selectedInvestment = '';
-
-        investmentOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                investmentOptions.forEach(opt => opt.classList.remove('active'));
-                option.classList.add('active');
-                selectedInvestment = option.textContent.trim();
-            });
-        });
-
-        const submitButton = document.getElementById('submitWhatsApp');
-        submitButton.addEventListener('click', () => {
-            const name = document.getElementById('formName').value.trim();
-            const phone = document.getElementById('formPhone').value.trim();
-            const henryNumber = '5511998928474';
-
-            if (!name || !phone || !selectedInvestment) {
-                alert('Por favor, preencha todos os campos e selecione uma faixa de investimento.');
-                return;
+                function ease(t, b, c, d) {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                }
+                requestAnimationFrame(animation);
             }
 
-            let message = `Olá! Vim pelo site e gostaria de saber mais sobre a assessoria.\n\n`;
-            message += `*Nome:* ${name}\n`;
-            message += `*Telefone:* ${phone}\n`;
-            message += `*Carteira de Investimentos:* ${selectedInvestment}`;
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    smoothScroll(targetId, 800);
+                });
+            });
 
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${henryNumber}?text=${encodedMessage}`;
-            window.open(whatsappUrl, '_blank');
+            // --- Botão Hero CTA Scroll ---
+            const heroCtaButton = document.getElementById('heroCtaButton');
+            if (heroCtaButton) {
+                heroCtaButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    smoothScroll('#contact-form', 800);
+                });
+            }
+
+            // --- Intersection Observer for Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+            // --- FORMULÁRIO WHATSAPP ---
+            const investmentOptions = document.querySelectorAll('.investment-option');
+            let selectedInvestment = '';
+
+            investmentOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    investmentOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                    selectedInvestment = option.textContent.trim();
+                });
+            });
+
+            const submitButton = document.getElementById('submitWhatsApp');
+            submitButton.addEventListener('click', () => {
+                const name = document.getElementById('formName').value.trim();
+                const phone = document.getElementById('formPhone').value.trim();
+                const henryNumber = '5511998928474';
+
+                if (!name || !phone) {
+                    alert('Por favor, preencha os campos de Nome e Telefone.');
+                    return;
+                }
+                if (!selectedInvestment) {
+                    alert('Por favor, selecione uma faixa de investimento.');
+                    return;
+                }
+
+                let message = `Olá! Vim pelo site e gostaria de saber mais sobre a assessoria.\n\n`;
+                message += `*Nome:* ${name}\n`;
+                message += `*Telefone:* ${phone}\n`;
+                message += `*Carteira de Investimentos:* ${selectedInvestment}`;
+
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${henryNumber}?text=${encodedMessage}`;
+                window.open(whatsappUrl, '_blank');
+            });
+
         });
-
-    });
     </script>
 </body>
+
 </html>
