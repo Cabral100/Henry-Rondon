@@ -33,7 +33,7 @@
         }
         
         /* --- Loading Page --- */
-      .loading-page {
+        .loading-page {
             position: fixed;
             top: 0;
             left: 0;
@@ -53,11 +53,14 @@
             opacity: 0;
             pointer-events: none;
         }
-
+        
+        /* CORREÇÃO 1: Ajustado o CSS do logo para caber na tela do celular */
         .loading-logo {
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
+            max-width: 80vw;
+            max-height: 80vh;
+            width: auto;
+            height: auto;
+            object-fit: contain; /* Garante que a imagem inteira apareça */
             animation: pulseLogo 1.5s ease-in-out infinite;
             background-color: transparent;
         }
@@ -246,24 +249,20 @@
 
         /* --- Media Queries --- */
         @media (max-width: 992px) {
-            .loading-logo {
-                width: 100vw;
-                height: 100vh;
-                object-fit: cover;
-                animation: pulseLogo 1.5s ease-in-out infinite;
-                background-color: transparent;
+            
+            /* CORREÇÃO 2: Faz a imagem de fundo do hero aparecer no mobile */
+            .hero {
+                background-attachment: scroll;
             }
 
             .two-col-layout, .journey-item, .contact-form-layout { grid-template-columns: 1fr; }
             
-            /* Ajuste 2: Garante que a imagem venha sempre depois do texto no mobile */
             .two-col-layout .col-text { order: 1; }
             .two-col-layout .col-image { order: 2; margin-bottom: 2rem; }
-            .two-col-layout.image-right .col-image { order: 2; } /* Mantém a ordem se a classe já estiver lá */
+            .two-col-layout.image-right .col-image { order: 2; }
 
             .journey-number { text-align: left; font-size: 6rem; }
 
-            /* Ajuste 1: Timeline vertical com linha no mobile */
             .legacy-timeline { 
                 flex-direction: column; 
                 align-items: flex-start;
@@ -281,30 +280,22 @@
             .legacy-step {
                 width: 100%;
                 text-align: left;
-                position: relative; /* Para posicionar icones e textos */
-                padding-left: 80px; /* Espaço para o ícone e a margem */
+                position: relative;
+                padding-left: 80px;
             }
             .legacy-icon {
                 margin: 0; 
                 position: absolute;
-                left: 0; /* Alinha o ícone na borda da padding-left do .legacy-step */
+                left: 0;
                 top: 0;
-                transform: translateX(0); /* Remove transform do left para alinhamento */
+                transform: translateX(0);
             }
             .legacy-step h4 {
-                 padding-top: 15px; /* Alinha o texto com o centro do ícone */
-                 margin-left: -20px; /* Ajusta a posição do texto */
+                padding-top: 15px;
+                margin-left: -20px;
             }
         }
         @media (max-width: 768px) {
-            .loading-logo {
-                width: 100vw;
-                height: 100vh;
-                object-fit: cover;
-                animation: pulseLogo 1.5s ease-in-out infinite;
-                background-color: transparent;
-            }
-
             .nav-menu, .header-cta { display: none; }
             .mobile-menu-toggle { display: block; }
         }
@@ -313,7 +304,7 @@
 <body>
 
     <div class="loading-page" id="loadingPage">
-    <img src="herohenry.png" alt="Logo Desktop" class="loading-logo desktop-logo">
+        <img src="herohenry.png" alt="Logo" class="loading-logo">
     </div>
     
     <div id="cotacoes-bar">
@@ -357,22 +348,22 @@
     <main>
         <section id="home" class="hero section">
             <div class="container">
-                 <div class="hero-content">
-                     <h1 class="animate-on-scroll">Assessoria de Investimentos <span>para o seu futuro.</span></h1>
-                     <p class="subtitle animate-on-scroll" style="transition-delay: 0.2s;">Estratégias inteligentes, atendimento personalizado e o foco nos seus objetivos.</p>
-                     <button id="heroCtaButton" class="cta-button animate-on-scroll" style="transition-delay: 0.4s;">Converse comigo</button>
-                 </div>
+                <div class="hero-content">
+                    <h1 class="animate-on-scroll">Assessoria de Investimentos <span>para o seu futuro.</span></h1>
+                    <p class="subtitle animate-on-scroll" style="transition-delay: 0.2s;">Estratégias inteligentes, atendimento personalizado e o foco nos seus objetivos.</p>
+                    <button id="heroCtaButton" class="cta-button animate-on-scroll" style="transition-delay: 0.4s;">Converse comigo</button>
+                </div>
             </div>
         </section>
 
         <section id="about" class="section">
             <div class="container">
                 <div class="two-col-layout">
-                     <div class="col-image animate-on-scroll">
-                         <img src="henry.png" alt="Henry Rondon - Assessor de Investimentos">
-                     </div>
+                    <div class="col-image animate-on-scroll">
+                        <img src="henry.png" alt="Henry Rondon - Assessor de Investimentos">
+                    </div>
                     <div class="col-text animate-on-scroll" style="transition-delay: 0.2s;">
-                        <h3>Henry Rondon & MGM Investimentos</h3>
+                        <h3>Henry Rondon & MGM Investimentos | BTG Pactual</h3>
                         <p>Meu trabalho é oferecer uma assessoria de investimentos diferenciada, em total alinhamento com a filosofia da MGM Investimentos. Nascida em 2015, a MGM se destaca pelo profundo conhecimento e compromisso com a excelência.</p>
                         <p>Como parte deste time e com o suporte do BTG Pactual, meu foco é proporcionar uma gestão patrimonial personalizada e integrada, desenvolvendo estratégias que vão além do tradicional, com base na confiança e transparência.</p>
                     </div>
@@ -396,7 +387,7 @@
                         <p>Certificação essencial para assessores de investimento, garantindo expertise em mercados financeiros e conformidade regulatória.</p>
                     </div>
                     <div class="cert-card animate-on-scroll" style="transition-delay: 0.2s;">
-                         <div class="cert-header">
+                        <div class="cert-header">
                             <div>
                                 <h4 class="cert-title">Diploma em Negócios</h4>
                                 <p style="color:var(--text-secondary)">Toronto School of Management</p>
@@ -473,21 +464,21 @@
                         <p>Antes de qualquer investimento, entendemos você. Analisamos sua carteira atual, identificamos seus objetivos e definimos seu perfil de investidor.</p>
                     </div>
                 </div>
-                 <div class="journey-item animate-on-scroll">
+                <div class="journey-item animate-on-scroll">
                     <div class="journey-number">02</div>
                     <div class="journey-text">
                         <h3>Diagnóstico Financeiro</h3><h4>Seu mapa patrimonial</h4>
                         <p>Construímos um retrato completo da sua vida financeira, identificando oportunidades, riscos e pontos de atenção que orientarão todas as próximas decisões.</p>
                     </div>
                 </div>
-                 <div class="journey-item animate-on-scroll">
+                <div class="journey-item animate-on-scroll">
                     <div class="journey-number">03</div>
                     <div class="journey-text">
                         <h3>Apresentação e Implementação</h3><h4>Do plano à ação</h4>
                         <p>Apresentamos seu projeto financeiro completo: uma carteira de investimentos robusta, estratégica e alinhada ao seu perfil e objetivos.</p>
                     </div>
                 </div>
-                 <div class="journey-item animate-on-scroll">
+                <div class="journey-item animate-on-scroll">
                     <div class="journey-number">04</div>
                     <div class="journey-text">
                         <h3>Acompanhamento e Revisão Estratégica</h3><h4>Evolução constante</h4>
@@ -498,7 +489,7 @@
         </section>
 
         <section id="legacy" class="section">
-             <div class="container">
+            <div class="container">
                 <h2 class="animate-on-scroll">Decisões que <span>atravessam gerações</span></h2>
                 <p class="section-subtitle animate-on-scroll">Um planejamento financeiro que pensa não apenas no hoje, mas no futuro que você está construindo.</p>
                 <div class="legacy-timeline">
@@ -521,26 +512,26 @@
         <section id="contact-form" class="section">
             <div class="container">
                 <div class="contact-form-section animate-on-scroll">
-                     <div class="contact-form-layout">
-                         <div class="col-text">
-                             <h2>Quer entender como seus investimentos podem <span>render mais?</span></h2>
-                             <p class="section-subtitle" style="text-align: left; margin: 1rem 0 0 0;">Preencha o formulário e descubra novas oportunidades para o seu patrimônio.</p>
-                         </div>
-                         <div class="col-form">
-                             <div class="form-fields">
-                                 <input type="text" id="formName" class="form-field" placeholder="Nome completo">
-                                 <input type="tel" id="formPhone" class="form-field" placeholder="Telefone / WhatsApp">
-                                 <p style="margin-top: 1rem;">Sua carteira de investimentos:</p>
-                                 <div class="form-options">
-                                     <div class="form-field investment-option">R$ 0 - R$ 100 mil</div>
-                                     <div class="form-field investment-option">R$ 100 mil - R$ 300 mil</div>
-                                     <div class="form-field investment-option">R$ 300 mil - R$ 1 milhão</div>
-                                     <div class="form-field investment-option">Acima de R$ 1 milhão</div>
-                                 </div>
-                                 <button id="submitWhatsApp" class="cta-button" style="margin-top: 1.5rem; text-align: center;">Converse comigo</button>
-                             </div>
-                         </div>
-                     </div>
+                    <div class="contact-form-layout">
+                        <div class="col-text">
+                            <h2>Quer entender como seus investimentos podem <span>render mais?</span></h2>
+                            <p class="section-subtitle" style="text-align: left; margin: 1rem 0 0 0;">Preencha o formulário e descubra novas oportunidades para o seu patrimônio.</p>
+                        </div>
+                        <div class="col-form">
+                            <div class="form-fields">
+                                <input type="text" id="formName" class="form-field" placeholder="Nome completo">
+                                <input type="tel" id="formPhone" class="form-field" placeholder="Telefone / WhatsApp">
+                                <p style="margin-top: 1rem;">Sua carteira de investimentos:</p>
+                                <div class="form-options">
+                                    <div class="form-field investment-option">R$ 0 - R$ 100 mil</div>
+                                    <div class="form-field investment-option">R$ 100 mil - R$ 300 mil</div>
+                                    <div class="form-field investment-option">R$ 300 mil - R$ 1 milhão</div>
+                                    <div class="form-field investment-option">Acima de R$ 1 milhão</div>
+                                </div>
+                                <button id="submitWhatsApp" class="cta-button" style="margin-top: 1.5rem; text-align: center;">Converse comigo</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -677,11 +668,8 @@
 
         investmentOptions.forEach(option => {
             option.addEventListener('click', () => {
-                // Remove a classe 'active' de todas as outras opções
                 investmentOptions.forEach(opt => opt.classList.remove('active'));
-                // Adiciona a classe 'active' na opção clicada
                 option.classList.add('active');
-                // Armazena o valor da opção selecionada
                 selectedInvestment = option.textContent.trim();
             });
         });
@@ -690,27 +678,20 @@
         submitButton.addEventListener('click', () => {
             const name = document.getElementById('formName').value.trim();
             const phone = document.getElementById('formPhone').value.trim();
-            const henryNumber = '5511998928474'; // Seu número de WhatsApp
+            const henryNumber = '5511998928474';
 
-            // Validação simples para garantir que os campos não estão vazios
             if (!name || !phone || !selectedInvestment) {
                 alert('Por favor, preencha todos os campos e selecione uma faixa de investimento.');
-                return; // Para a execução se algum campo estiver faltando
+                return;
             }
 
-            // Monta a mensagem
             let message = `Olá! Vim pelo site e gostaria de saber mais sobre a assessoria.\n\n`;
             message += `*Nome:* ${name}\n`;
             message += `*Telefone:* ${phone}\n`;
             message += `*Carteira de Investimentos:* ${selectedInvestment}`;
 
-            // Codifica a mensagem para URL
             const encodedMessage = encodeURIComponent(message);
-
-            // Cria o link do WhatsApp
             const whatsappUrl = `https://wa.me/${henryNumber}?text=${encodedMessage}`;
-
-            // Abre o WhatsApp em uma nova aba
             window.open(whatsappUrl, '_blank');
         });
 
